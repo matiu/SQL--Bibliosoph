@@ -10,7 +10,7 @@ INSTALL
 	make install
 
 COPYRIGHT
-	Copyright (c) 2007 Matias Alejo Garcia. All rights reserved.
+	Copyright (c) 2007-2009 Matias Alejo Garcia. All rights reserved.
 	This program is free software; you can redistribute it and/or
 	modify it under the same terms as Perl itself.
 
@@ -21,4 +21,12 @@ PREREQUISITES
 	DBD:mysql
 
 Future Changes
-	*	Add support for other database engines.
+    *   See github log
+
+More info
+    @ Github
+        http://github.com/matiu/SQL--Bibliosoph
+
+    @ Cpan
+        http://search.cpan.org/~matiu/
+
