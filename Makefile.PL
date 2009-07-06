@@ -13,6 +13,7 @@ WriteMakefile(
 			'Object::InsideOut' => undef,
 			'Carp'				=> undef,
 			'Package::Constants'=> undef,
+            'Switch'            => undef,
 	},
 );
 

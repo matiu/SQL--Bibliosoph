@@ -1,5 +1,6 @@
 --exclude=.svn 
 --exclude=build
+--exclude=blib
 --exclude=buildp
 --exclude=OBSOLETE
 --langdef=sql_bibliosoph

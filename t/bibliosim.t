@@ -8,10 +8,12 @@ use strict;
 use warnings;
 
 use Test::More;
+use Scalar::Util qw(looks_like_number);
 
 use lib qw(t/lib lib ../lib);
-use Test::More;
+
 use SQL::BibliosophSim;
+
 
 my $bs = new SQL::BibliosophSim();
 isa_ok($bs,'SQL::BibliosophSim');
@@ -26,6 +28,18 @@ is(ref($bs->h_USER()),'ARRAY', 'HASH Test query resultset');
 is(ref($bs->h_USER()->[0]),'HASH', 'HASH Test query row');
 
 is(ref($bs->rowh_USER()),'HASH', 'HASH ROW Test query row');
+
+
+my $a =  $bs->USER()->[0]->[0];
+ok(looks_like_number $a, "Query returns a number: $a");
+
+$a =  $bs->USER()->[8]->[4234];
+ok(looks_like_number $a, "Query returns a number: $a");
+
+
+my ($l,$b) =  $bs->h_USER();
+ok($b, "Size is 10");
+ok(ref($l) eq 'ARRAY', "IS a hash");
 
 done_testing;
 
