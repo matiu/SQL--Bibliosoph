@@ -13,7 +13,7 @@
 #     ABSTRACT => q[A SQL Query library]
 #     AUTHOR => q[Matias Alejo Garcia ( matiu@cpan.org ) ]
 #     NAME => q[SQL::Bibliosoph]
-#     PREREQ_PM => { Test::More=>undef, Package::Constants=>undef, DBD::mysql=>q[4.004], Time::HiRes=>undef, Carp=>undef, Object::InsideOut=>undef, DBI=>q[1.5] }
+#     PREREQ_PM => { Test::More=>undef, Package::Constants=>undef, DBD::mysql=>q[4.004], Switch=>undef, Time::HiRes=>undef, Carp=>undef, Object::InsideOut=>undef, DBI=>q[1.5] }
 #     VERSION_FROM => q[lib/SQL/Bibliosoph.pm]
 
 # --- MakeMaker post_initialize section:
@@ -53,11 +53,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = SQL::Bibliosoph
 NAME_SYM = SQL_Bibliosoph
-VERSION = 1.5
+VERSION = 1.6
 VERSION_MACRO = VERSION
-VERSION_SYM = 1_5
+VERSION_SYM = 1_6
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 1.5
+XS_VERSION = 1.6
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -263,7 +263,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = SQL-Bibliosoph
-DISTVNAME = SQL-Bibliosoph-1.5
+DISTVNAME = SQL-Bibliosoph-1.6
 
 
 # --- MakeMaker macro section:
@@ -490,7 +490,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) Generating META.yml
 	$(NOECHO) $(ECHO) '--- #YAML:1.0' > META_new.yml
 	$(NOECHO) $(ECHO) 'name:               SQL-Bibliosoph' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version:            1.5' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version:            1.6' >> META_new.yml
 	$(NOECHO) $(ECHO) 'abstract:           A SQL Query library' >> META_new.yml
 	$(NOECHO) $(ECHO) 'author:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - Matias Alejo Garcia ( matiu@cpan.org ) ' >> META_new.yml
@@ -506,6 +506,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '    DBI:                 1.5' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Object::InsideOut:   ~' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Package::Constants:  ~' >> META_new.yml
+	$(NOECHO) $(ECHO) '    Switch:              ~' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Test::More:          ~' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Time::HiRes:         ~' >> META_new.yml
 	$(NOECHO) $(ECHO) 'no_index:' >> META_new.yml
@@ -806,7 +807,7 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="1.5">' > $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="1.6">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>A SQL Query library</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Matias Alejo Garcia ( matiu@cpan.org ) </AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
@@ -815,6 +816,7 @@ ppd :
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBI::" VERSION="1.5" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Object::InsideOut" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Package::Constants" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Switch::" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Test::More" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Time::HiRes" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-gnu-thread-multi-5.10" />' >> $(DISTNAME).ppd

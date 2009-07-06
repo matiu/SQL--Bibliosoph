@@ -35,7 +35,7 @@ sub new {
 
     bless $self, $class;
 
-    $self->{rows} = 
+    $self->{rows} = $args{rows} || 10;
 
     return $self;
 }
@@ -46,6 +46,7 @@ sub AUTOLOAD {
     my ($self) = @_;
 
     my $ret;
+    my $rows = $self->{rows};
 
     switch ($AUTOLOAD) {
         case qr/::rowh_/  {
@@ -64,7 +65,7 @@ sub AUTOLOAD {
         }
         case qr/::h_/  {
             my $ret = [];
-            foreach (1..10) {
+            foreach (1..$rows) {
                 my %hash;
                 tie %hash, 'Tie::Hash::Random';
                 push @$ret, \%hash;
@@ -73,7 +74,7 @@ sub AUTOLOAD {
         }
         else {
             my $ret = [];
-            foreach (1..10) {
+            foreach (1..$rows) {
                 my @array;
                 tie @array, 'Tie::Array::Random';
                 push @$ret, \@array;

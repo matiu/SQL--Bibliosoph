@@ -41,6 +41,12 @@ my ($l,$b) =  $bs->h_USER();
 ok($b, "Size is 10");
 ok(ref($l) eq 'ARRAY', "IS a hash");
 
+my $bs = new SQL::BibliosophSim(rows=>5);
+isa_ok($bs,'SQL::BibliosophSim');
+($l,$b) =  $bs->h_USER();
+ok($b, "Size is 5");
+
+
 done_testing;
 
 
