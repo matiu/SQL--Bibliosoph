@@ -2,7 +2,7 @@
 use strict;
 use lib qw(t/lib lib ../lib);
 use DBD::Mock;
-use Test::More 'no_plan';
+use Test::More;
 use SQL::Bibliosoph;
 
 my $str = <<"END";
@@ -26,7 +26,8 @@ my $dbh = DBI->connect('DBI:Mock:', '', '')
     or die "Cannot create handle: $DBI::errstr\n";
 
 my $bb = new SQL::Bibliosoph( {dbh => $dbh, catalog_str => $str  } );
-is(ref($bb),'SQL::Bibliosoph','Constructor');
+
+isa_ok($bb,'SQL::Bibliosoph');
 
 
 my $q1 = $bb->USERS1();
@@ -40,5 +41,4 @@ my $q3 = $bb->USERS3();
 is(ref($q3),'ARRAY','Simple query 3');
 
 
-
-
+done_testing();
