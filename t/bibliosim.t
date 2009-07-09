@@ -78,7 +78,7 @@ ok(eq_hash($l, $h1) , 'presets support: TITo');
 my $h =  $bs->rowh_RANDy();
 ok( $h->{name} =~ /^[A-Za-z]+$/ , 'name is a random string : ' . $h->{name});
 
-my $h =  $bs->rowh_RAND2y();
+$h =  $bs->rowh_RAND2y();
 ok( $h->{name} =~ /^[0-9]+$/ , 'name is a random number : ' . $h->{name});
 
 # ------------------------------------------------------------------------
@@ -97,7 +97,7 @@ SKIP: {
     my $h =  $bs->rowh_RANDy();
     ok( $h->{name} =~ /^[A-Za-z]+$/ , 'name is a random string : ' . $h->{name});
 
-    my $h =  $bs->rowh_RAND2y();
+    $h =  $bs->rowh_RAND2y();
     ok( $h->{name} =~ /^[0-9]+$/ , 'name is a random number : ' . $h->{name});
 
 };
