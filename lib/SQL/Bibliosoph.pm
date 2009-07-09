@@ -8,7 +8,7 @@ package SQL::Bibliosoph; {
 	use SQL::Bibliosoph::CatalogFile;
 
 	use vars qw($VERSION );
-	$VERSION = "1.7";
+	$VERSION = "1.8";
 
 	our $QUIET = 0;
 	our $DEBUG = 0;

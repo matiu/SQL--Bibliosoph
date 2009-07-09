@@ -84,7 +84,8 @@ package SQL::Bibliosoph::Sims; {
     use Carp;
     use Data::Dumper;
 
-    use vars qw($AUTOLOAD);    
+	use vars qw($VERSION );
+	$VERSION = "1.8";
 
     use SQL::Bibliosoph::CatalogFile;
 
