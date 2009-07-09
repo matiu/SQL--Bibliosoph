@@ -47,7 +47,7 @@ Will generate random date when you call any subrotine on it.  This module is ins
                     }
     );
 
-    Values in the array will be evaluated. You can use rand_ functions from Data::Random to generate your values.
+    Values in the array will be evaluated. You can use rand_ functions from Data::Random to generate your values.. presets queries have preference over presets_catalog quieres.
 
 
 =head3 presets_catalog
@@ -101,11 +101,6 @@ package SQL::Bibliosoph::Sims; {
         my ($self) = @_;
         my $qs;
 
-
-        if (my $qs = $presets[$$self]) {
-            $self->create_presets($qs);
-        }
-
         my $file = $presets_catalog[$$self];
         if ($file) {
 
@@ -114,6 +109,13 @@ package SQL::Bibliosoph::Sims; {
             my  $qs = SQL::Bibliosoph::CatalogFile->new( file => $file )->read();
             $self->create_presets($qs); 
         }
+
+
+        if (my $qs = $presets[$$self]) {
+            $self->create_presets($qs);
+        }
+
+
 
         return $self;
     }
@@ -126,7 +128,6 @@ package SQL::Bibliosoph::Sims; {
 
         foreach my $name ( keys %$qs ) {
             my $value = $qs->{$name};
-print STDERR "VALUE IS $value\n\n";
 
             # Is this a refence?
             *{__PACKAGE__.'::'.$name} = sub {
