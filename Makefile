@@ -160,7 +160,7 @@ MAN1PODS =
 MAN3PODS = lib/SQL/Bibliosoph.pm \
 	lib/SQL/Bibliosoph/CatalogFile.pm \
 	lib/SQL/Bibliosoph/Query.pm \
-	lib/SQL/BibliosophSim.pm
+	lib/SQL/Bibliosoph/Sims.pm
 
 # Where is the Config information that we are using/depend on
 CONFIGDEP = $(PERL_ARCHLIB)$(DFSEP)Config.pm $(PERL_INC)$(DFSEP)config.h
@@ -185,7 +185,7 @@ PERL_ARCHIVE_AFTER =
 TO_INST_PM = lib/SQL/Bibliosoph.pm \
 	lib/SQL/Bibliosoph/CatalogFile.pm \
 	lib/SQL/Bibliosoph/Query.pm \
-	lib/SQL/BibliosophSim.pm
+	lib/SQL/Bibliosoph/Sims.pm
 
 PM_TO_BLIB = lib/SQL/Bibliosoph/Query.pm \
 	blib/lib/SQL/Bibliosoph/Query.pm \
@@ -193,8 +193,8 @@ PM_TO_BLIB = lib/SQL/Bibliosoph/Query.pm \
 	blib/lib/SQL/Bibliosoph.pm \
 	lib/SQL/Bibliosoph/CatalogFile.pm \
 	blib/lib/SQL/Bibliosoph/CatalogFile.pm \
-	lib/SQL/BibliosophSim.pm \
-	blib/lib/SQL/BibliosophSim.pm
+	lib/SQL/Bibliosoph/Sims.pm \
+	blib/lib/SQL/Bibliosoph/Sims.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -419,12 +419,12 @@ manifypods : pure_all  \
 	lib/SQL/Bibliosoph/Query.pm \
 	lib/SQL/Bibliosoph.pm \
 	lib/SQL/Bibliosoph/CatalogFile.pm \
-	lib/SQL/BibliosophSim.pm
+	lib/SQL/Bibliosoph/Sims.pm
 	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) \
 	  lib/SQL/Bibliosoph/Query.pm $(INST_MAN3DIR)/SQL::Bibliosoph::Query.$(MAN3EXT) \
 	  lib/SQL/Bibliosoph.pm $(INST_MAN3DIR)/SQL::Bibliosoph.$(MAN3EXT) \
 	  lib/SQL/Bibliosoph/CatalogFile.pm $(INST_MAN3DIR)/SQL::Bibliosoph::CatalogFile.$(MAN3EXT) \
-	  lib/SQL/BibliosophSim.pm $(INST_MAN3DIR)/SQL::BibliosophSim.$(MAN3EXT) 
+	  lib/SQL/Bibliosoph/Sims.pm $(INST_MAN3DIR)/SQL::Bibliosoph::Sims.$(MAN3EXT) 
 
 
 
@@ -832,7 +832,7 @@ pm_to_blib : $(TO_INST_PM)
 	  lib/SQL/Bibliosoph/Query.pm blib/lib/SQL/Bibliosoph/Query.pm \
 	  lib/SQL/Bibliosoph.pm blib/lib/SQL/Bibliosoph.pm \
 	  lib/SQL/Bibliosoph/CatalogFile.pm blib/lib/SQL/Bibliosoph/CatalogFile.pm \
-	  lib/SQL/BibliosophSim.pm blib/lib/SQL/BibliosophSim.pm 
+	  lib/SQL/Bibliosoph/Sims.pm blib/lib/SQL/Bibliosoph/Sims.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 

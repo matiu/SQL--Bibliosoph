@@ -4,7 +4,9 @@ MANIFEST
 Makefile.PL
 INSTALL
 t/biblio.t
+t/bibliosim.t
 t/lib/DBD/Mock.pm
 lib/SQL/Bibliosoph.pm
+lib/SQL/Bibliosoph/Sims.pm
 lib/SQL/Bibliosoph/CatalogFile.pm
 lib/SQL/Bibliosoph/Query.pm

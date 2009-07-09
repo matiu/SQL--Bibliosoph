@@ -411,7 +411,7 @@ SQL::Bibliosoph - A SQL Statements Library
 
 
     # To disable all debug output. 
-    # $SQL::Biblosoph::QUIT=1;
+    # $SQL::Biblosoph::QUIET=1;
 
 	# Using dynamic generated functions.  Wrapper funtions 
 	# are automaticaly created on module initialization.
@@ -538,9 +538,7 @@ SQL::Bibliosoph by Matias Alejo Garcia (matias at confronte.com) and Lucas Lain 
 
 =head1 COPYRIGHT
 
-Copyright (c) 2007 Matias Alejo Garcia. All rights reserved.
-This program is free software; you can redistribute it and/or
-modify it under the same terms as Perl itself.
+Copyright (c) 2007-2009 Matias Alejo Garcia. All rights reserved.  This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
 =head1 SUPPORT / WARRANTY
 
@@ -557,10 +555,9 @@ At	http://nits.com.ar/bibliosoph you can find:
 	* VIM syntax highlighting definitions for bb files
 	* CTAGS examples for indexing bb files.
 
+    You can also find the vim and ctags files in the /etc subdirectory.
 
-=head1 ACKNOWLEDGEMENTS
-
-To Confronte.com and its associates to support the development of this module.
+    Lasted version at: http://github.com/matiu/SQL--Bibliosoph/tree/master
 
 =head1 BUGS
 
