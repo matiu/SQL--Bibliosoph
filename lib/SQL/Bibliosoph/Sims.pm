@@ -105,7 +105,7 @@ package SQL::Bibliosoph::Sims; {
         my $file = $presets_catalog[$$self];
         if ($file) {
 
-            die $! if ! -e $file;
+            die "$file: $!" if ! -e $file;
 
             my  $qs = SQL::Bibliosoph::CatalogFile->new( file => $file )->read();
             $self->create_presets($qs); 
