@@ -3,6 +3,9 @@ README
 MANIFEST
 Makefile.PL
 INSTALL
+etc/bb.vim
+etc/ctags
+etc/tests.bb
 t/biblio.t
 t/bibliosim.t
 t/lib/DBD/Mock.pm
