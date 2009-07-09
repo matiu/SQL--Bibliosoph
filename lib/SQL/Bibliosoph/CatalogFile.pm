@@ -64,6 +64,7 @@ package SQL::Bibliosoph::CatalogFile; {
 		my ($self,$raw) = @_;
 		return {} if ! $raw;
 
+#       print STDERR "RAW: $raw\n\n";        
 		return {
 				map { 
 					$_->[0] => $_->[1]

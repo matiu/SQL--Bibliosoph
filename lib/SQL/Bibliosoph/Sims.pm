@@ -37,23 +37,43 @@ Will generate random date when you call any subrotine on it.  This module is ins
 
     You can costumize the return of some particular query by using preset, like this:
 
-    my $bs = SQL::Bibliosoph::Sims(
+    my $bs = sql::bibliosoph::sims(
                     presets => {
-                        rowh_USER       => { name => 'Juan', age => '42' },
-                        rowh_COSTUMER   => { 
-                                    name => 'rand_words( size=>10 )', 
-                                    age =>  'rand_chars( size=>2 )',
-                        },
+                        rowh_user       => '{ name => "juan", age => "42" }',
+                        rowh_costumer   => '{ 
+                                    name => "rand_words( size=>10 )", 
+                                    age =>  "rand_chars( size=>2 )",
+                        }',
                     }
     );
 
-    If the value starts with 'rand_' the argument will be evalutated. See Data::Random documentation for details about rand_ functions.
+    Values in the array will be evaluated. You can use rand_ functions from Data::Random to generate your values.
 
 
-=head1 TODO
+=head3 presets_catalog
+
+    You can also define catalog for tests. In this case, the queries not defined in the catalog will be random generated. The defined, will be evaluated:
+
+    my $bs = sql::bibliosoph::sims(
+                    presets_catalog => 'tests.bb',
+    );
+
+    tests.bb:
+--[ TITo ]
+    { a=>1, b=>2 }
+--[ rowh_RANDy ]    
+    {name => join "", rand_chars( set=> "alpha", min=>5, max=>7) } 
+--[ rowh_RAND2y ]
+     {name => join "", rand_chars( set=> "numeric", min=>5, max=>7) }
+--[ h_RAND3 ]
+    [ { id => (join '',rand_chars(set=>"numeric")), name => join ('', rand_chars(set=>"alpha")), role_code => 1 }, ],
+--[ h_RAND4 ]
+    [ { id =>1 }, { id => 2 }, { id => 3 } , ],
+
+=head1 BUGS
     
-    Maybe SQL::Bibliosoph::Sims should support catalogs files (.bb). This should be simple to implement using       
-   
+    If you use presets_catalog, arrays references [] rows MUST BE ended with a ',' (comma).
+ 
 
 =cut
 
@@ -106,11 +126,16 @@ package SQL::Bibliosoph::Sims; {
 
         foreach my $name ( keys %$qs ) {
             my $value = $qs->{$name};
+print STDERR "VALUE IS $value\n\n";
 
             # Is this a refence?
             *{__PACKAGE__.'::'.$name} = sub {
                 my ($that) = shift;
-                return eval $value;
+
+                my $ret = eval $value;
+                if ($@) {  die "error in $value : $@"; };
+
+                return $ret;
             };
         }            
     }

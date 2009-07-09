@@ -85,6 +85,7 @@ ok( $h->{name} =~ /^[0-9]+$/ , 'name is a random number : ' . $h->{name});
 note "Now testing a presets catalogs...";
 
 my $file = 'etc/tests.bb';
+$bs = undef;
 
 SKIP: {
     skip "Could not find $file", 3  unless -e $file;
@@ -99,6 +100,13 @@ SKIP: {
 
     $h =  $bs->rowh_RAND2y();
     ok( $h->{name} =~ /^[0-9]+$/ , 'name is a random number : ' . $h->{name});
+
+  
+    my $a = $bs->h_RAND3(1,2);
+
+    is( ref($a) , 'ARRAY' , ' $a is an array');
+    is( ref($a->[0]) , 'HASH' , ' $a->[0] is a hash');
+    is( $a->[0]->{role_code} , 1 , '$a->[0]->{role_code} is 1'); 
 
 };
 
