@@ -13,7 +13,7 @@
 #     ABSTRACT => q[A SQL Query library]
 #     AUTHOR => q[Matias Alejo Garcia ( matiu@cpan.org ) ]
 #     NAME => q[SQL::Bibliosoph]
-#     PREREQ_PM => { Test::More=>undef, Package::Constants=>undef, DBD::mysql=>q[4.004], Switch=>undef, Time::HiRes=>undef, Carp=>undef, Object::InsideOut=>undef, DBI=>q[1.5] }
+#     PREREQ_PM => { Package::Constants=>undef, DBD::Mock=>undef, Switch=>undef, Tie::Hash::Random=>q[1], Time::HiRes=>undef, Carp=>undef, Test::More=>q[0.92], DBD::mysql=>q[4.004], DBI=>q[1.5], Tie::Array::Random=>q[1], Object::InsideOut=>undef }
 #     VERSION_FROM => q[lib/SQL/Bibliosoph.pm]
 
 # --- MakeMaker post_initialize section:
@@ -53,11 +53,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = SQL::Bibliosoph
 NAME_SYM = SQL_Bibliosoph
-VERSION = 1.7
+VERSION = 1.8
 VERSION_MACRO = VERSION
-VERSION_SYM = 1_7
+VERSION_SYM = 1_8
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 1.7
+XS_VERSION = 1.8
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -263,7 +263,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = SQL-Bibliosoph
-DISTVNAME = SQL-Bibliosoph-1.7
+DISTVNAME = SQL-Bibliosoph-1.8
 
 
 # --- MakeMaker macro section:
@@ -490,7 +490,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) Generating META.yml
 	$(NOECHO) $(ECHO) '--- #YAML:1.0' > META_new.yml
 	$(NOECHO) $(ECHO) 'name:               SQL-Bibliosoph' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version:            1.7' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version:            1.8' >> META_new.yml
 	$(NOECHO) $(ECHO) 'abstract:           A SQL Query library' >> META_new.yml
 	$(NOECHO) $(ECHO) 'author:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - Matias Alejo Garcia ( matiu@cpan.org ) ' >> META_new.yml
@@ -502,12 +502,15 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '    ExtUtils::MakeMaker:  0' >> META_new.yml
 	$(NOECHO) $(ECHO) 'requires:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Carp:                ~' >> META_new.yml
+	$(NOECHO) $(ECHO) '    DBD::Mock:           ~' >> META_new.yml
 	$(NOECHO) $(ECHO) '    DBD::mysql:          4.004' >> META_new.yml
 	$(NOECHO) $(ECHO) '    DBI:                 1.5' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Object::InsideOut:   ~' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Package::Constants:  ~' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Switch:              ~' >> META_new.yml
-	$(NOECHO) $(ECHO) '    Test::More:          ~' >> META_new.yml
+	$(NOECHO) $(ECHO) '    Test::More:          0.92' >> META_new.yml
+	$(NOECHO) $(ECHO) '    Tie::Array::Random:  1' >> META_new.yml
+	$(NOECHO) $(ECHO) '    Tie::Hash::Random:   1' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Time::HiRes:         ~' >> META_new.yml
 	$(NOECHO) $(ECHO) 'no_index:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    directory:' >> META_new.yml
@@ -807,17 +810,20 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="1.7">' > $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="1.8">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>A SQL Query library</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Matias Alejo Garcia ( matiu@cpan.org ) </AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Carp::" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBD::Mock" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBD::mysql" VERSION="4.004" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBI::" VERSION="1.5" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Object::InsideOut" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Package::Constants" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Switch::" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Test::More" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Test::More" VERSION="0.92" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Tie::Array::Random" VERSION="1" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Tie::Hash::Random" VERSION="1" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Time::HiRes" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-gnu-thread-multi-5.10" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd
