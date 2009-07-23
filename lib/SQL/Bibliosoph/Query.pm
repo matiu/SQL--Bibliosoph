@@ -227,7 +227,7 @@ SQL::Bibliosoph::Query - A SQL Prepared statement
 
 =head1 VERSION
 
-1.0
+2.0
 
 =head1 DESCRIPTION
 
@@ -261,7 +261,7 @@ SQL::Bibliosoph by Matias Alejo Garcia (matias at confronte.com) and Lucas Lain 
 
 =head1 COPYRIGHT
 
-Copyright (c) 2007 Matias Alejo Garcia. All rights reserved.
+Copyright (c) 2007-2009 Matias Alejo Garcia. All rights reserved.
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 

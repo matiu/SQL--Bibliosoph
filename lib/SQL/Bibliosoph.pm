@@ -23,7 +23,7 @@ package SQL::Bibliosoph; {
 
 	sub d {
         my $self = shift;
-	    print STDERR "@_\n" if $self->debug(); 
+	    print STDERR join ('', grep { $_ } @_ ) ."\n" if $self->debug(); 
 	}
 
 	#------------------------------------------------------------------
@@ -314,25 +314,20 @@ SQL::Bibliosoph - A SQL Statements Library
 
 =head1 VERSION
 
-1.4
+2.0
 
 =head1 SYNOPSIS
 
 	use SQL::Bibliosoph;
 
 
-    # To enable DEBUG, set:
-    # $SQL::Biblosoph::DEBUG=1;
-
 	my $bs = SQL::Biblioshoph->new(
 			dsn		 => $database_handle,
 			catalog  => [ qw(users products <billing) ],
-    #       benchmark=> 1, # to enable statement benchmarking and debug
+    #       benchmark=> 1,      # to enable statement benchmarking and debug
+    #       debug    => 1,      # to enable debug to STDERR
 	);
 
-
-    # To disable all debug output. 
-    # $SQL::Biblosoph::QUIET=1;
 
 	# Using dynamic generated functions.  Wrapper funtions 
 	# are automaticaly created on module initialization.
@@ -433,12 +428,8 @@ Allows to define a SQL catalog using a string (not a file). The queries will be 
 	
 =head3 constants_from 
 
-In order to use the same constants in your PERL code and your SQL modules, you can declare a module using `constants_from` paramenter. Constants exported in that module (using @EXPORT) will be replaced in all catalog file before SQL preparation.
+In order to use the same constants in your PERL code and your SQL modules, you can declare a module using `constants_from` paramenter. Constants exported in that module (using @EXPORT) will be replaced in all catalog file before SQL preparation. The module must be in the @INC path.
 
-
-=head3 constants_path
-
-Define the search path for `constants_from`  PERL modules.
 
 =head3 delayed 
 
@@ -449,13 +440,17 @@ Do not prepare all the statements at startup. They will be prepared individualy,
 Use this to enable Query profilling. The elapsed time (in miliseconds) will be printed
 to STDERR after each query execution.
 
+=head3 debug
+
+To enable debug (prints each query, and arguments, very useful during development).
+
 =head1 Bibliosoph
 
 n. person having deep knowledge of books. bibliognostic.
 
 =head1 AUTHORS
 
-SQL::Bibliosoph by Matias Alejo Garcia (matias at confronte.com) and Lucas Lain (lucas at confronte.com).
+SQL::Bibliosoph by Matias Alejo Garcia (matiu at cpan.org) and Lucas Lain (lucas at confronte.com).
 
 =head1 COPYRIGHT
 

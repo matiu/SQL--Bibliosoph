@@ -23,7 +23,7 @@ package SQL::Bibliosoph::CatalogFile; {
 			$self->read_only(1);
 		}
 
-		croak "File does not " if ! -e $file;
+		croak "File does not exists $file " if ! -e $file;
 	}
 
 	sub read {
@@ -109,7 +109,7 @@ SQL::Bibliosoph::CatalogFile - Bibliosoph SQL Statements Parser
 
 =head1 VERSION
 
-1.0
+2.0
 
 =head1 DESCRIPTION
 
@@ -176,11 +176,11 @@ The bind parameter number can be preceded by a `#`. This force the parameter to 
 
 =head1 AUTHORS
 
-SQL::Bibliosoph by Matias Alejo Garcia (matias at confronte.com) and Lucas Lain (lucas at confronte.com).
+SQL::Bibliosoph by Matias Alejo Garcia (matiu at cpan.org) and Lucas Lain (lucas at confronte.com).
 
 =head1 COPYRIGHT
 
-Copyright (c) 2007 Matias Alejo Garcia. All rights reserved.
+Copyright (c) 2007-2009 Matias Alejo Garcia. All rights reserved.
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
