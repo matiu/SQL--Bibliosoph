@@ -69,6 +69,7 @@ $bs = new SQL::Bibliosoph::Sims(
                     TITo => $h1_code,
                     rowh_RANDy=> ' {name => join "", rand_chars( set=> "alpha", min=>5, max=>7) } ',
                     rowh_RAND2y=> ' {name => join "", rand_chars( set=> "numeric", min=>5, max=>7) } ',
+                    row_RAND3y=> ' [ 0, join "",rand_chars( set=> "numeric", min=>5, max=>7)] ',
             }, 
       );
 ($l,$b) =  $bs->TITo();
@@ -80,6 +81,9 @@ ok( $h->{name} =~ /^[A-Za-z]+$/ , 'name is a random string : ' . $h->{name});
 
 $h =  $bs->rowh_RAND2y();
 ok( $h->{name} =~ /^[0-9]+$/ , 'name is a random number : ' . $h->{name});
+
+$h =  $bs->row_RAND3y();
+ok( $h->[1] =~ /^[0-9]+$/ , 'name is a random number : ' . $h->[1]);
 
 # ------------------------------------------------------------------------
 note "Now testing a presets catalogs...";
