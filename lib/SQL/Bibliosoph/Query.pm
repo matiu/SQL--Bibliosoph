@@ -1,76 +1,60 @@
 package SQL::Bibliosoph::Query; {
-	use Object::InsideOut;
-	use strict;
-    use utf8;
+	use Moose;
 	use Carp;
-	use Package::Constants;
-	use Data::Dumper;
 	use DBI;
+    use Data::Dumper;
     use Time::HiRes qw(gettimeofday tv_interval);
+    use feature qw(say);
 
-	use vars qw($VERSION );
-	$VERSION = "1.2";
+    our $VERSION = "2.00";
 
-	our $DEBUG      = 1;
-	our $BENCHMARK  = 0;
-	our $QUIET      = 0;
+    has benchmark  => ( is => 'rw', isa=>'Bool', default => 0);
+    has quiet      => ( is => 'rw', isa=>'Bool', default => 0);
+    has dbh        => ( is => 'rw', isa => 'DBI::db',  required=> 1);
+    has delayed    => ( is => 'rw', isa => 'Bool', default=> 0);
 
-	my @dbh		:Field :Arg(Name=> 'dbh', Mandatory=> 1) :Std(dbh);
+    has name       => ( is => 'rw', default=> 'unnamed');
+    has st         => ( is => 'rw');
+    has sth        => ( is => 'rw');
+    has bind_links => ( is => 'rw', default => sub { return []; } );
+    has bind_params=> ( is => 'rw');
 
-	my @delayed		:Field :Arg(Name=> 'delayed', Default=> 0) :Std(delayed);
 
-    # Statement name (only for debugging)
-	my @name 		:Fields :Arg(Name=> 'name', Default=> 'unknown') :Std(name);
 
-    # Statement text
-	my @st	 		:Fields :Arg(Name=> 'st', Mandatory=> 1) :Std(st);
+	sub BUILD {
+		my ($self) = @_;
 
-	my @sth	 		:Fields;		# Statement handler
-	my @bind_links 	:Fields;		# Links in bind parameters
-	my @bind_params	:Fields;		# Count of bind parameters
-
-    my %init_args :InitArgs = (
-                st => {
-                    Mandatory => 1,
-                },
-	);
-
-	#------------------------------------------------------------------
-
-	# Constuctor
-	sub init :Init {
-		my ($self,$args) = @_;
-        unless ($delayed[$$self]) {
-            $self->prepare();
-        }
+        $self->prepare() unless $self->delayed();
 	}
 
-
 	#------------------------------------------------------------------
+    
 	sub prepare {
         my ($self) = @_;
 
-		say ('Preparing "' . $name[$$self] . '"');
-		my $st = $st[$$self];
+		my $st = $self->st;
 
 		# Process bb language
 		my $numeric_fields  = $self->parse(\$st);
 
-		$sth[$$self] = $dbh[$$self]->prepare_cached($st) 
+        #say 'Preparing "' . $self->name() ;
+
+		$self->sth( $self->dbh()->prepare_cached($st) )
 					or croak "error preparing :  $st";
 
 		# Set numeric bind variables
 		foreach (@$numeric_fields) {
-			$sth[$$self]->bind_param($_,100,DBI::SQL_INTEGER);
+			$self->sth()->bind_param($_,100,DBI::SQL_INTEGER);
 		}
-        $delayed[$$self] = 0;
+
+        $self->delayed(0);
     }
 
 	#------------------------------------------------------------------
 	sub select_many {
 		my ($self, $values, $splice) = @_;
 
-        $self->prepare() if $delayed[$$self];
+        $self->prepare() if $self->delayed();
 
 		return $self->pexecute($values)->fetchall_arrayref($splice)
 	}
@@ -79,11 +63,12 @@ package SQL::Bibliosoph::Query; {
     # with sql_calc_found_rows
 	sub select_many2 {
 		my ($self, $values,$splice) = @_;
-        $self->prepare() if $delayed[$$self];
+
+        $self->prepare() if $self->delayed();
 
 		return ( 
             $self->pexecute($values)->fetchall_arrayref($splice),
-            $dbh[$$self]->selectrow_array('SELECT FOUND_ROWS()'),
+            $self->dbh()->selectrow_array('SELECT FOUND_ROWS()'),
         )
 	}
 
@@ -92,7 +77,10 @@ package SQL::Bibliosoph::Query; {
 	# to do @{xxxx} in the caller
 	sub select_row {
 		my ($self,$values) = @_;
-        $self->prepare() if $delayed[$$self];
+
+        $self->prepare() if $self->delayed();
+
+
 
 		return $self->pexecute($values)->fetchrow_arrayref() || [];
 	}
@@ -101,7 +89,8 @@ package SQL::Bibliosoph::Query; {
     # Returns a hash ref
 	sub select_row_hash {
 		my ($self, $values) = @_;
-        $self->prepare() if $delayed[$$self];
+
+        $self->prepare() if $self->delayed();
 
 		return $self->pexecute($values)->fetchrow_hashref() || {};
 	}
@@ -109,7 +98,8 @@ package SQL::Bibliosoph::Query; {
 	#------------------------------------------------------------------
 	sub select_do {
 		my ($self, $values) = @_;
-        $self->prepare() if $delayed[$$self];
+
+        $self->prepare() if $self->delayed();
 
 		return $self->pexecute($values);
 	}
@@ -137,12 +127,13 @@ package SQL::Bibliosoph::Query; {
 
 			# Linked field?
 			/(\d+)/ && do {
-				$bind_links[$$self]->[$total]= int($1);
+
+                $self->bind_links()->[$total]= int($1);
                 $numbered++;
 			};
 			$total++;
 		}
-		$bind_params[$$self] = $total;
+		$self->bind_params($total);
 
         croak "Bad statament use ALL numbered bind variables, or NONE, but don't mix them in $$st " 
             if $numbered && $numbered != $total;
@@ -159,46 +150,54 @@ package SQL::Bibliosoph::Query; {
 	sub pexecute {
 		my ($self,$values) = @_;
 
-        my $start_time = [ gettimeofday ] if ($BENCHMARK);
+        my $start_time = [ gettimeofday ] if $self->benchmark();
+
+
 
 		# Completes the input array
-		if (@$values < $bind_params[$$self]) {
-			$values->[$bind_params[$$self]-1] = undef;
+		if (@$values < $self->bind_params()) {
+			$values->[$self->bind_params()-1] = undef;
 		}
-
-
-		#say(Dumper($values));
+        #say "EXE ", $self->dump(), 'VAUES', Dumper($values);
 
 		# Use links
 		eval {
 			# Has Numeric Links? ( i.e. 3? )
-			if ( my $l = $bind_links[$$self] ) {
+            my $l = $self->bind_links();
+			if ( @$l>0 ) {
 				#say("start:".Dumper($values), Dumper($l));
 
 				my @v;
 				foreach (@$l) {
 					push @v, $values->[$_-1];
 				}
-				#say(Dumper(\@v));
+                #say "EXE1 ". Dumper(@v);
 
-				$sth[$$self]->execute (@v);
+				$self->sth()->execute (@v);
 			}
 
 			# No links, direct param mapping ( ? ? )
 			else {
-				$sth[$$self]->execute(@$values[0..$bind_params[$$self]-1]);
+                #say "EXE2 ", Dumper($values);
+				$self->sth()->execute( 
+                        @$values[ 0 .. $self->bind_params() - 1 ],
+                );
 			}
 		};
 
-         if ($@) {
+        if ( $@ ) {
                # $sth->err and $DBI::err will be true if error was from DBI
-               carp __PACKAGE__." ERROR  $@ in statement  '".
-                $name[$$self]."': \"".$st[$$self].'\"'
-                unless $QUIET
+               carp __PACKAGE__ 
+                    ." ERROR  $@ in statement  '"
+                    .  $self->name() 
+                    . "': \"" 
+                    . $self->st() 
+                    . '\"'
+                unless $self->quiet()
                 ; # print the error
-         }
+        }
 
-        if ($BENCHMARK) {
+        if ( $self->benchmark() ) {
 
             my $t = tv_interval( $start_time ) *1000;
 
@@ -206,21 +205,15 @@ package SQL::Bibliosoph::Query; {
             print STDERR "\t". $t . " ms \n" if $t > 1;
         }
 
-		return $sth[$$self];
+		return $self->sth();
 	}
 
 	#------------------------------------------------------------------
 
-    sub _destroy :Destroy {
+    sub DEMOLISH {
 		my $self= shift;
-        $sth[$$self]->finish() if  $sth[$$self];
+        $self->sth()->finish() if $self->sth();
    	}
-
-	#------------------------------------------------------------------
-	sub say {
-		print STDERR __PACKAGE__." : @_\n" if $DEBUG; 
-	}
-
 
 }
 

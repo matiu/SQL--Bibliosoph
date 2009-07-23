@@ -1,67 +1,46 @@
 package SQL::Bibliosoph::CatalogFile; {
-	use Object::InsideOut;
-	use strict;
+	use Moose;
     use utf8;
 	use Carp;
 	use Data::Dumper;
-	use vars qw(@INC);
 
-	use vars qw($VERSION );
-	$VERSION = "1.2";
+    our $VERSION = "2.00";
 
-	our $DEBUG = 1;
-
-	my @abs_file 	:Field ;
-	my @read_only 	:Field ;
-
-    my %init_args :InitArgs = (
-                file => {
-                    Mandatory 	=> 1,
-                },
-                path => {
-					Default		=> '.',
-				}
-	);
+    has file     => ( is => 'rw', isa=>'Str',  required => 1 );
+    has read_only=> ( is => 'rw', isa=>'Bool', default => 0 );
 
 	#------------------------------------------------------------------
 
 	# Constructor
-	sub init :Init {
-		my ($self,$args) = @_;
+	sub BUILD {
+		my ($self) = @_;
 
-		my $file = $args->{file};
+		my $file = $self->file();
 
 		# Is read only?
 		if (substr ($file,0,1) eq '<' ) {
 			$file = substr($file,1);
-			$read_only[$$self]	=1;
+			$self->read_only(1);
 		}
 
-		if (substr($file,0,1) ne '/') {
-			$abs_file[$$self] = $args->{path}.'/'.$file;
-		}
-		else {
-			$abs_file[$$self] = $file;
-		};
-
-		croak 'Could not check "'.$abs_file[$$self]."\": $! " if ! -e $abs_file[$$self];
+		croak "File does not " if ! -e $file;
 	}
 
 	sub read {
 		my ($self) = @_;
 
-		my $file_contents= $self->file_to_str(); 
+		my $file_contents= $self->file_to_str( $self->file() ); 
 
 		my $qs = $self->_parse($file_contents);
 
 		# Read only?
-		$self->filter_out_writes(\$qs) if $read_only[$$self];
+		$self->filter_out_writes(\$qs) if $self->read_only();
 
 		return $qs;
 	}
 
 	sub _parse {
-		my ($self,$raw) = @_;
+		my ($self, $raw) = @_;
 		return {} if ! $raw;
 
 #       print STDERR "RAW: $raw\n\n";        
@@ -102,13 +81,11 @@ package SQL::Bibliosoph::CatalogFile; {
 	#------------------------------------------------------------------
 	# Reads a file to a string
 	sub file_to_str {
-		my ($self) = @_;
+		my ($self, $file) = @_;
 
 		my $FH;
-		open ($FH,$abs_file[$$self]) 
-			or croak "Could not read \"".$abs_file[$$self]."\" : $!";
-
-		say ("Reading : ".$abs_file[$$self]);
+		open ($FH,$file) 
+			or croak "Could not read \"".$file."\" : $!";
 
 		my @all = <$FH>;
 		close ($FH);
@@ -118,11 +95,6 @@ package SQL::Bibliosoph::CatalogFile; {
 			grep { ! /^[\s\t]*$/ } 		#filler out blanks
 			@all
 		);
-	}
-
-	#------------------------------------------------------------------
-	sub say {
-		print STDERR "\n".__PACKAGE__." : @_\n" if $DEBUG; 
 	}
 
 }

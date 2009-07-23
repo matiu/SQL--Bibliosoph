@@ -3,7 +3,6 @@ use strict;
 use lib qw(t/lib lib ../lib);
 use DBD::Mock;
 use Test::More;
-use SQL::Bibliosoph;
 
 my $str = <<"END";
 --[ USERS1 ]
@@ -25,20 +24,27 @@ END
 my $dbh = DBI->connect('DBI:Mock:', '', '')
     or die "Cannot create handle: $DBI::errstr\n";
 
+
+require_ok('SQL::Bibliosoph');
+
 my $bb = new SQL::Bibliosoph( {dbh => $dbh, catalog_str => $str  } );
 
 isa_ok($bb,'SQL::Bibliosoph');
 
 
-my $q1 = $bb->USERS1();
-is(ref($q1),'ARRAY','Simple query 1');
+my $q = $bb->USERS1();
+is(ref($q),'ARRAY','Simple query 1');
 
-my $q2 = $bb->USERS2();
-is(ref($q2),'ARRAY','Simple query 2');
+$q = $bb->USERS2();
+is(ref($q),'ARRAY','Simple query 2');
 
 
-my $q3 = $bb->USERS3();
-is(ref($q3),'ARRAY','Simple query 3');
+$q = $bb->USERS3();
+is(ref($q),'ARRAY','Simple query 3');
+
+$q = $bb->rowh_USERS3();
+is(ref($q),'HASH','Simple query 3');
+
 
 
 done_testing();
