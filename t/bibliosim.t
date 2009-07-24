@@ -94,6 +94,7 @@ $bs = undef;
 SKIP: {
     skip "Could not find $file", 3  unless -e $file;
 
+
     $bs = new SQL::Bibliosoph::Sims( presets_catalog =>  $file );
     ($l,$b) =  $bs->TITo();
     ok(eq_hash($l, $h1) , 'presets support: TITo');
@@ -112,6 +113,15 @@ SKIP: {
     is( ref($a->[0]) , 'HASH' , ' $a->[0] is a hash');
     is( $a->[0]->{role_code} , 1 , '$a->[0]->{role_code} is 1'); 
 
+    eval {
+        $bs->BAD();
+    };
+    if ($@ =~ /syntax/) {
+        pass ("Catalog with bad syntax should die");
+    }
+    else {
+        fail ("Catalog with bad syntax should die");
+    }
 };
 
 

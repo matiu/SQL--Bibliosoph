@@ -91,14 +91,17 @@ package SQL::Bibliosoph::Sims; {
     use Tie::Hash::Random;
     use Data::Random qw(:all);
     use feature qw/switch/;
+    use Data::Dumper;
 
     has rows    => (is => 'rw', isa => 'Int', default=> '10');
-    has presets => (is => 'rw', isa => 'HashRef');
+    has presets => (is => 'rw', isa => 'HashRef', default=> sub { return {};  } );
     has presets_catalog => (is => 'rw', isa => 'Str');
 
     sub BUILD {
         my ($self) = @_;
         my $qs;
+
+        # Add catalog's presets, if any.
 
         my $file = $self->presets_catalog();
         if ($file) {
@@ -106,49 +109,34 @@ package SQL::Bibliosoph::Sims; {
             die "$file: $!" if ! -e $file;
 
             my  $qs = SQL::Bibliosoph::CatalogFile->new( file => $file )->read();
-            $self->create_presets($qs); 
-        }
 
+            while (my ($k, $v) = each %$qs) {
+                $self->presets()->{$k} = $v;
 
-        if (my $qs = $self->presets() ) {
-            $self->create_presets($qs);
+            }
         }
 
         return $self;
     }
 
-    sub create_presets {
-        my ($self, $qs) = @_;
-
-        no strict 'refs';
-        no warnings 'redefine';
-
-        foreach my $name ( keys %$qs ) {
-            my $value = $qs->{$name};
-
-            # Is this a refence?
-            *{__PACKAGE__.'::'.$name} = sub {
-                my ($that) = shift;
-
-                my $ret = eval $value;
-                if ($@) {  die "error in $value : $@"; };
-
-                return $ret;
-            };
-        }            
-    }
-
-
 
     sub AUTOLOAD {
         my $self        = shift;
-        my $method_name = $AUTOLOAD;
+        (my $method_name = $AUTOLOAD ) =~ s/^.*:://;
         my $ret;
 
-        
         my $rows = $self->rows();
 
+
         die "no method name @_" if ! $method_name;
+
+        if (my $return = $self->presets()->{$method_name}) {
+            my $ret = eval $return;
+            if ($@) {
+                die "Error in \"$method_name\": $@\n $return \n";
+            }
+            return $ret;
+        }
 
 
         given ($method_name) {
@@ -186,6 +174,7 @@ package SQL::Bibliosoph::Sims; {
             }
         };
     }
+
 }
 
 

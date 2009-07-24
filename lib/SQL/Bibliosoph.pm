@@ -119,6 +119,8 @@ package SQL::Bibliosoph; {
 			no strict 'refs';
 			no warnings 'redefine';
 
+            # TODO change to $self->meta->create_method();
+
 			/^SELECT\b/ && do {
 				# Returns
 				# scalar : results

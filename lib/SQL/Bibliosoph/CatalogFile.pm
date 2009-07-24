@@ -96,7 +96,6 @@ package SQL::Bibliosoph::CatalogFile; {
 			@all
 		);
 	}
-
 }
 
 1;

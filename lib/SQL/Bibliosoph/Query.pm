@@ -208,13 +208,6 @@ package SQL::Bibliosoph::Query; {
 		return $self->sth();
 	}
 
-	#------------------------------------------------------------------
-
-    sub DEMOLISH {
-		my $self= shift;
-        $self->sth()->finish() if $self->sth();
-   	}
-
 }
 
 1;
