@@ -23,7 +23,7 @@ package SQL::Bibliosoph; {
 
 	sub d {
         my $self = shift;
-	    print STDERR join ('', grep { $_ } @_ ) ."\n" if $self->debug(); 
+	    print STDERR join (' ', map { $_ // 'NULL'  } @_ ) ."\n" if $self->debug(); 
 	}
 
 	#------------------------------------------------------------------
@@ -313,10 +313,6 @@ __END__
 =head1 NAME
 
 SQL::Bibliosoph - A SQL Statements Library 
-
-=head1 VERSION
-
-2.0
 
 =head1 SYNOPSIS
 
