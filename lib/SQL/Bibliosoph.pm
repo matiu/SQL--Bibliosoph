@@ -6,7 +6,7 @@ package SQL::Bibliosoph; {
 	use SQL::Bibliosoph::Query;
 	use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.00";
+    our $VERSION = "2.01";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -21,6 +21,9 @@ package SQL::Bibliosoph; {
 
     has 'queries'   => ( is => 'rw', default=> sub { return {}; } );
 
+    ## OLD (just for backwards compat)
+    has 'path' => ( is => 'rw', isa => 'Str', default=> '');
+
 	sub d {
         my $self = shift;
 	    print STDERR join (' ', map { $_ // 'NULL'  } @_ ) ."\n" if $self->debug(); 
@@ -33,6 +36,8 @@ package SQL::Bibliosoph; {
 
 		$self->d( "Constructing Bibliosoph " ) ;
 
+        $self->path(  $self->path() . '/' ) if $self->path() ;
+
 		# Start Strings
         $self->do_all_for(SQL::Bibliosoph::CatalogFile->_parse($self->catalog_str()))
             if $self->catalog_str();                
@@ -42,7 +47,7 @@ package SQL::Bibliosoph; {
 		foreach my $fname (@{ $self->catalog() }) {
 			$self->do_all_for(
 				SQL::Bibliosoph::CatalogFile->new(
-							file 			=> $fname, 
+							file 			=>  $self->path() . $fname, 
 				)->read()
 			);
 		}
