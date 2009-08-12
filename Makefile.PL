@@ -16,6 +16,7 @@ WriteMakefile(
 			'Time::HiRes'       => undef,
 			'Carp'				=> undef,
 			'Package::Constants'=> undef,
-	},
+            'Devel::Cover'      => undef,
+        },
 );
 
