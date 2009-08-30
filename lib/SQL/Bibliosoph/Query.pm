@@ -199,10 +199,10 @@ package SQL::Bibliosoph::Query; {
 
         if ( my $min_t = $self->benchmark() ) {
 
-            my $t = tv_interval( $start_time ) *1000;
+            my $t = tv_interval( $start_time ) ;
 
             # Only if it takes more that 1ms...
-            print STDERR "\t". $t . " ms \n" if $t > $min_t;
+            print STDERR "\t". $t *1000 . " ms \n" if $t > $min_t;
         }
 
 		return $self->sth();
