@@ -17,7 +17,7 @@ package SQL::Bibliosoph; {
 
     has 'delayed'   => ( is => 'ro', isa => 'Bool', default=> 0);
     has 'debug'     => ( is => 'ro', isa => 'Bool', default=> 0);
-    has 'benchmark' => ( is => 'ro', isa => 'Bool', default=> 0);
+    has 'benchmark' => ( is => 'ro', isa => 'Num', default=> 0);
 
     has 'queries'   => ( is => 'rw', default=> sub { return {}; } );
 
