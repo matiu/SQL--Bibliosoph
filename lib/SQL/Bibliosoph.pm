@@ -294,6 +294,7 @@ package SQL::Bibliosoph; {
                         st      => $st, 
                         name    => $name,
                         delayed => $self->delayed(),
+                        benchmark=> $self->benchmark(),
             };
             #print STDERR " Query for ".Dumper($args);            
 
