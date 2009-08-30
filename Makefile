@@ -13,7 +13,7 @@
 #     ABSTRACT => q[A SQL Query library]
 #     AUTHOR => q[Matias Alejo Garcia ( matiu@cpan.org ) ]
 #     NAME => q[SQL::Bibliosoph]
-#     PREREQ_PM => { Package::Constants=>undef, DBD::Mock=>undef, Tie::Hash::Random=>q[1], Time::HiRes=>undef, Carp=>undef, Test::More=>q[0.88], DBD::mysql=>q[4.004], DBI=>q[1.5], Tie::Array::Random=>q[1], Moose=>q[0.82] }
+#     PREREQ_PM => { Package::Constants=>undef, DBD::Mock=>undef, Tie::Hash::Random=>q[1], Time::HiRes=>undef, Carp=>undef, Test::More=>q[0.88], DBD::mysql=>q[4.004], Devel::Cover=>undef, DBI=>q[1.5], Tie::Array::Random=>q[1], Moose=>q[0.82] }
 #     VERSION_FROM => q[lib/SQL/Bibliosoph.pm]
 
 # --- MakeMaker post_initialize section:
@@ -505,6 +505,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '    DBD::Mock:           ~' >> META_new.yml
 	$(NOECHO) $(ECHO) '    DBD::mysql:          4.004' >> META_new.yml
 	$(NOECHO) $(ECHO) '    DBI:                 1.5' >> META_new.yml
+	$(NOECHO) $(ECHO) '    Devel::Cover:        ~' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Moose:               0.82' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Package::Constants:  ~' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Test::More:          0.88' >> META_new.yml
@@ -817,6 +818,7 @@ ppd :
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBD::Mock" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBD::mysql" VERSION="4.004" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBI::" VERSION="1.5" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Devel::Cover" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" VERSION="0.82" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Package::Constants" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Test::More" VERSION="0.88" />' >> $(DISTNAME).ppd

@@ -327,7 +327,8 @@ SQL::Bibliosoph - A SQL Statements Library
 	my $bs = SQL::Biblioshoph->new(
 			dsn		 => $database_handle,
 			catalog  => [ qw(users products <billing) ],
-    #       benchmark=> 1,      # to enable statement benchmarking and debug
+    #       benchmark=> 0.5,      # to enable statement benchmarking and debug 
+    #                               0.5 = log queries that takes more than half second
     #       debug    => 1,      # to enable debug to STDERR
 	);
 
@@ -441,7 +442,8 @@ Do not prepare all the statements at startup. They will be prepared individualy,
 =head3 benchmark
 
 Use this to enable Query profilling. The elapsed time (in miliseconds) will be printed
-to STDERR after each query execution.
+to STDERR after each query execution, if the time is bigger that `benchmark` (must be 
+given in SECONDS, can be a floating point number)
 
 =head3 debug
 

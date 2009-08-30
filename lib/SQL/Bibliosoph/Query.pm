@@ -8,7 +8,7 @@ package SQL::Bibliosoph::Query; {
 
     our $VERSION = "2.00";
 
-    has benchmark  => ( is => 'rw', isa=>'Bool', default => 0);
+    has benchmark  => ( is => 'rw', isa=>'Num', default => 0);
     has quiet      => ( is => 'rw', isa=>'Bool', default => 0);
     has dbh        => ( is => 'rw', isa => 'DBI::db',  required=> 1);
     has delayed    => ( is => 'rw', isa => 'Bool', default=> 0);
@@ -197,12 +197,12 @@ package SQL::Bibliosoph::Query; {
                 ; # print the error
         }
 
-        if ( $self->benchmark() ) {
+        if ( my $min_t = $self->benchmark() ) {
 
             my $t = tv_interval( $start_time ) *1000;
 
             # Only if it takes more that 1ms...
-            print STDERR "\t". $t . " ms \n" if $t > 1;
+            print STDERR "\t". $t . " ms \n" if $t > $min_t;
         }
 
 		return $self->sth();
