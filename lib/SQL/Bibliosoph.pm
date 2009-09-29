@@ -6,7 +6,7 @@ package SQL::Bibliosoph; {
 	use SQL::Bibliosoph::Query;
 	use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.02";
+    our $VERSION = "2.03";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -26,7 +26,7 @@ package SQL::Bibliosoph; {
 
 	sub d {
         my $self = shift;
-	    print STDERR join (' ', map { $_ // 'NULL'  } @_ ) ."\n" if $self->debug(); 
+	    print STDERR join (' ', map { $_ // 'NULL'  } @_ )  if $self->debug(); 
 	}
 
 	#------------------------------------------------------------------
@@ -34,7 +34,7 @@ package SQL::Bibliosoph; {
 	sub BUILD {
 		my ($self) = @_;
 
-		$self->d( "Constructing Bibliosoph " ) ;
+		$self->d( "Constructing Bibliosoph\n" ) ;
 
         $self->path(  $self->path() . '/' ) if $self->path() ;
 
@@ -113,7 +113,7 @@ package SQL::Bibliosoph; {
 		}
 
 
-		$self->d("\tCreated methods for [".(keys %$q)."] queries.");
+		$self->d("\tCreated methods for [".(keys %$q)."] queries\n");
 	}
 
 	
@@ -257,7 +257,7 @@ package SQL::Bibliosoph; {
 			import $p;
 			my @cs = Package::Constants->list($p);
 
-			$self->d("\tConstants from $p [".@cs."] ");
+			$self->d("\tConstants from $p [".@cs."]\n");
 
 
 			# DO Replace constants
@@ -294,6 +294,7 @@ package SQL::Bibliosoph; {
                         st      => $st, 
                         name    => $name,
                         delayed => $self->delayed(),
+                        debug   => $self->debug(),
                         benchmark=> $self->benchmark(),
             };
             #print STDERR " Query for ".Dumper($args);            
@@ -303,7 +304,7 @@ package SQL::Bibliosoph; {
 
             $i++;                  
 		}
-		$self->d("\tPrepared $i Statements". ( $self->delayed() ? " (delayed) " : '' ));
+		$self->d("\tPrepared $i Statements". ( $self->delayed() ? " (delayed) " : '' ). "\n");
 	}
 
 
