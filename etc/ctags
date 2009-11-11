@@ -3,6 +3,7 @@
 --exclude=blib
 --exclude=buildp
 --exclude=OBSOLETE
+--exclude=OLD
 --langdef=sql_bibliosoph
 --langdef=html_template
 --langdef=perl2

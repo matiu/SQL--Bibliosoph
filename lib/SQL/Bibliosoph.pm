@@ -6,14 +6,14 @@ package SQL::Bibliosoph; {
 	use SQL::Bibliosoph::Query;
 	use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.03";
+    our $VERSION = "2.05";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
     has 'catalog'   => ( is => 'ro', isa => 'ArrayRef', default => sub { return [] } );
     has 'catalog_str'=>( is => 'ro', isa => 'Str');
 
-    has 'constants_from' =>( is => 'ro', isa => 'Str');
+    has 'constants_from' =>( is => 'ro', isa => 'Maybe[Str]');
 
     has 'delayed'   => ( is => 'ro', isa => 'Bool', default=> 0);
     has 'debug'     => ( is => 'ro', isa => 'Bool', default=> 0);
@@ -392,6 +392,10 @@ SQL::Bibliosoph - A SQL Statements Library
 	#  INSERT INTO person (name,age) VALUES (?,?);
 	
 	my $last_insert_id = $bs->insert_person($name,$age);
+
+
+    # Usefull when no primary key is defined
+	my ($dummy_last_insert_id, $total_inserted) = $bs->insert_person($name,$age);
 
 
 	# Updating some rows

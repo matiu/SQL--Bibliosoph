@@ -1,5 +1,7 @@
 use ExtUtils::MakeMaker;
 
+use 5.10.0;
+
 WriteMakefile(
 	NAME            => 'SQL::Bibliosoph',
 	VERSION_FROM    => 'lib/SQL/Bibliosoph.pm',
@@ -18,5 +20,6 @@ WriteMakefile(
 			'Package::Constants'=> undef,
             'Devel::Cover'      => undef,
         },
+    MIN_PERL_VERSION => '5.10.0',
 );
 
