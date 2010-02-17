@@ -37,7 +37,7 @@ Will generate random date when you call any subrotine on it.  This module is ins
 
     You can costumize the return of some particular query by using preset, like this:
 
-    my $bs = sql::bibliosoph::sims(
+    my $bs = SQL::Bibliosoph::Sims(
                     presets => {
                         rowh_user       => '{ name => "juan", age => "42" }',
                         rowh_costumer   => '{ 
@@ -54,7 +54,7 @@ Will generate random date when you call any subrotine on it.  This module is ins
 
     You can also define catalog for tests. In this case, the queries not defined in the catalog will be random generated. The defined, will be evaluated:
 
-    my $bs = sql::bibliosoph::sims(
+    my $bs = SQL::Bibliosoph::Sims->new(
                     presets_catalog => 'tests.bb',
     );
 
@@ -72,7 +72,12 @@ Will generate random date when you call any subrotine on it.  This module is ins
 
 =head1 BUGS
     
-    If you use presets_catalog, arrays references [] rows MUST BE ended with a ',' (comma).
+    If you use presets_catalog, arrays references [] rows MUST BE ended with a ',' (comma), like in:
+
+--[ h_RAND4 ]
+    [ { id =>1 }, { id => 2 }, { id => 3 } , ],
+
+
  
 
 =cut
