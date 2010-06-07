@@ -19,6 +19,8 @@ WriteMakefile(
 			'Carp'				=> undef,
 			'Package::Constants'=> undef,
             'Devel::Cover'      => undef,
+            'Digest::MD5'       => 2.39,
+            'Cache::Memcached::Fast' => 0.17,
         },
     MIN_PERL_VERSION => '5.10.0',
 );
