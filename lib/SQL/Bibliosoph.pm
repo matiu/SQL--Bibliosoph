@@ -9,7 +9,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.12";
+    our $VERSION = "2.13";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -64,14 +64,14 @@ package SQL::Bibliosoph; {
             $self->memc( new Cache::Memcached::Fast({
                     servers => [ { address => $self->memcached_address() },
                     ],
-                    namespace => 'biblio:',
-                    compress_threshold => 100_000,
-                    max_failures => 3,
-                    failure_timeout => 5,
-                    nowait => 1,
-                    hash_namespace => 1,
-                    serialize_methods => [ \&Storable::freeze, \&Storable::thaw ],
-                    max_size => 512 * 1024,
+                    namespace           => 'biblio:',
+                    compress_threshold  => 100_000,
+                    max_failures        => 3,
+                    failure_timeout     => 5,
+                    nowait              => 1,
+                    hash_namespace      => 1,
+                    serialize_methods   => [ \&Storable::freeze, \&Storable::thaw ],
+                    max_size            => 512 * 1024,
 #                    utf8 => 1,
             }));
 
@@ -154,10 +154,13 @@ package SQL::Bibliosoph; {
             }
 
 # CALL no ALWAYS returns a results set!!            
-#           # Small exception3: CALL => Possible RESULT SET
-#           if ($st =~ /^CALL/is ) {
-#               $type = 'SELECT';
-#           }
+#           # Small exception3:
+# USE LIKE THAT : /* SELECT */ CALL => Possible RESULT SET
+           if ($st =~ /SELECT/is ) {
+               $type = 'SELECT';
+           }
+
+
 
             $self->create_method_for(uc($type||''),$name);
         }
