@@ -1,3 +1,5 @@
 *.tar.gz
 *.tar
 *.sw?
+tags
+blib
