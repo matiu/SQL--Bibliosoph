@@ -20,6 +20,8 @@ package SQL::Bibliosoph::Query; {
     has bind_links => ( is => 'rw', default => sub { return []; } );
     has bind_params=> ( is => 'rw');
 
+    has throw_errors=> ( is => 'rw', default=> 1);
+
 
 
 	sub BUILD {
@@ -187,15 +189,23 @@ package SQL::Bibliosoph::Query; {
 		};
 
         if ( $@ ) {
-               # $sth->err and $DBI::err will be true if error was from DBI
-               carp __PACKAGE__ 
+
+            my $e = __PACKAGE__ 
                     ." ERROR  $@ in statement  '"
                     .  $self->name() 
                     . "': \"" 
                     . $self->st() 
                     . '\"'
-                unless $self->quiet()
-                ; # print the error
+                    ;
+
+            if ($self->throw_errors() ) {
+               # $sth->err and $DBI::err will be true if error was from DBI
+               carp $e unless $self->quiet() ; # print the error
+            }
+            else {
+                print STDERR $e;        
+                return SQL::Bibliosoph::Dummy->new();
+            }
         }
 
         if ( my $min_t = $self->benchmark() ) {

@@ -9,7 +9,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.13";
+    our $VERSION = "2.14";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -25,6 +25,7 @@ package SQL::Bibliosoph; {
 
     has 'queries'   => ( is => 'rw', default=> sub { return {}; } );
     has 'memc'      => ( is => 'rw');
+    has throw_errors=> ( is => 'rw', default=> 1);
 
     ## OLD (just for backwards compat)
     has 'path' => ( is => 'rw', isa => 'Str', default=> '');
@@ -459,6 +460,7 @@ package SQL::Bibliosoph; {
                         delayed => $self->delayed(),
                         debug   => $self->debug(),
                         benchmark=> $self->benchmark(),
+                        throw_errors => $self->throw_errors(),
             };
             #print STDERR " Query for ".Dumper($args);            
 
