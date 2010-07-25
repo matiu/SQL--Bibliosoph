@@ -246,18 +246,20 @@ package SQL::Bibliosoph; {
 
                     my $ret;
 
-                    $ret = $self->memc()->get($md5) unless $cfg->{refresh} ;
+                    $ret = $self->memc()->get($md5);
 
                     if (! defined ($ret) ) { 
                         $self->d("\t[running SQL & storing memc]\n");
                         $ret = $self->queries()->{$name}->select_many([@_],{});
-                        $self->memc()->set($md5, $ret, $ttl);
+
+                        # $ret could be undefined is query had an error!
+                        $self->memc()->set($md5, $ret, $ttl) if defined $ret;
                     }
                     else {
                         $self->d("\t[from memc]\n");
                     }
 
-                    return $ret;
+                    return $ret || [];
                 };
 
                 last SW;
@@ -328,15 +330,13 @@ package SQL::Bibliosoph; {
                         $md5c .= $s;
                     }
 
-                    unless ( $cfg->{refresh} ) {
-                        $ret = $self->memc()->get_multi($md5, $md5c) ;
-                        if ($ret) {
-                            $val    = $ret->{$md5};
-                            $count  = $ret->{$md5c};
-                        }
+                    $ret = $self->memc()->get_multi($md5, $md5c) ;
+                    if ($ret) {
+                        $val    = $ret->{$md5};
+                        $count  = $ret->{$md5c};
                     }
 
-                    if (! $val ) { 
+                    if (! defined $val ) { 
                         $self->d("\t[running SQL & storing memc]\n");
 
                         ($val, $count)
@@ -345,11 +345,13 @@ package SQL::Bibliosoph; {
                         $self->memc()->set_multi( 
                                 [ $md5,  $val,      $ttl],
                                 [ $md5c, $count,    $ttl],
-                            );
+                        ) if defined $val;
                     }
                     else {
                         $self->d("\t[from memc]\n");
                     }
+
+                    $val //= [];
 
                     return wantarray 
                         ? ($val, $count)
@@ -591,12 +593,6 @@ SQL::Bibliosoph - A SQL Statements Library
     # Mmemcached queries are only generated for hash, multiple rows, results h_QUERY, using de "ch_" prefix.
 
     my $products_array_of_hash_ref = $bs->ch_get_products({ttl => 10 }, $country,$price,$start,$limit);
-    
-    # To force refresh, with SQL access, and then set memcached cache for 10 secs, 
-    #  use the `refresh` parameter, as there:
-    
-    my $products_array_of_hash_ref = $bs->ch_get_products(
-        {ttl => 10, refresh => 1}, $country,$price,$start,$limit);
     
     # To define a group of query (for later simulaneous expiration) use:
    

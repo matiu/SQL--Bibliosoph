@@ -6,6 +6,8 @@ package SQL::Bibliosoph::Query; {
     use Time::HiRes qw(gettimeofday tv_interval);
     use feature qw(say);
 
+    use SQL::Bibliosoph::Dummy;
+
     our $VERSION = "2.00";
 
     has benchmark  => ( is => 'rw', isa=>'Num', default => 0);

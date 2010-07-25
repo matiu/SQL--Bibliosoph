@@ -56,11 +56,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = SQL::Bibliosoph
 NAME_SYM = SQL_Bibliosoph
-VERSION = 2.13
+VERSION = 2.14
 VERSION_MACRO = VERSION
-VERSION_SYM = 2_13
+VERSION_SYM = 2_14
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 2.13
+XS_VERSION = 2.14
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -187,10 +187,13 @@ PERL_ARCHIVE_AFTER =
 
 TO_INST_PM = lib/SQL/Bibliosoph.pm \
 	lib/SQL/Bibliosoph/CatalogFile.pm \
+	lib/SQL/Bibliosoph/Dummy.pm \
 	lib/SQL/Bibliosoph/Query.pm \
 	lib/SQL/Bibliosoph/Sims.pm
 
-PM_TO_BLIB = lib/SQL/Bibliosoph/Query.pm \
+PM_TO_BLIB = lib/SQL/Bibliosoph/Dummy.pm \
+	blib/lib/SQL/Bibliosoph/Dummy.pm \
+	lib/SQL/Bibliosoph/Query.pm \
 	blib/lib/SQL/Bibliosoph/Query.pm \
 	lib/SQL/Bibliosoph.pm \
 	blib/lib/SQL/Bibliosoph.pm \
@@ -266,7 +269,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = SQL-Bibliosoph
-DISTVNAME = SQL-Bibliosoph-2.13
+DISTVNAME = SQL-Bibliosoph-2.14
 
 
 # --- MakeMaker macro section:
@@ -493,7 +496,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) Generating META.yml
 	$(NOECHO) $(ECHO) '--- #YAML:1.0' > META_new.yml
 	$(NOECHO) $(ECHO) 'name:               SQL-Bibliosoph' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version:            2.13' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version:            2.14' >> META_new.yml
 	$(NOECHO) $(ECHO) 'abstract:           A SQL Query library' >> META_new.yml
 	$(NOECHO) $(ECHO) 'author:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - Matias Alejo Garcia ( matiu@cpan.org ) ' >> META_new.yml
@@ -816,7 +819,7 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="2.13">' > $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="2.14">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>A SQL Query library</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Matias Alejo Garcia ( matiu@cpan.org ) </AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
@@ -844,6 +847,7 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  lib/SQL/Bibliosoph/Dummy.pm blib/lib/SQL/Bibliosoph/Dummy.pm \
 	  lib/SQL/Bibliosoph/Query.pm blib/lib/SQL/Bibliosoph/Query.pm \
 	  lib/SQL/Bibliosoph.pm blib/lib/SQL/Bibliosoph.pm \
 	  lib/SQL/Bibliosoph/Sims.pm blib/lib/SQL/Bibliosoph/Sims.pm \

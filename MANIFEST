@@ -13,3 +13,4 @@ lib/SQL/Bibliosoph.pm
 lib/SQL/Bibliosoph/Sims.pm
 lib/SQL/Bibliosoph/CatalogFile.pm
 lib/SQL/Bibliosoph/Query.pm
+lib/SQL/Bibliosoph/Dummy.pm

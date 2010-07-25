@@ -4,4 +4,7 @@ package SQL::Bibliosoph::Dummy; {
 
     our $VERSION = "2.00";
 
+    sub fetchall_arrayref { return undef };
+    sub fetchrow_arrayref { return undef };
+    sub fetchrow_hashref { return undef };
 }
