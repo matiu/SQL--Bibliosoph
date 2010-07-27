@@ -7,4 +7,5 @@ package SQL::Bibliosoph::Dummy; {
     sub fetchall_arrayref { return undef };
     sub fetchrow_arrayref { return undef };
     sub fetchrow_hashref { return undef };
+    sub rows { return undef };
 }

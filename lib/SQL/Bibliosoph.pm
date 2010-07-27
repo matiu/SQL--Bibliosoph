@@ -9,7 +9,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.14";
+    our $VERSION = "2.16";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -150,18 +150,15 @@ package SQL::Bibliosoph; {
             }
 
             # Small exception2: if it is a SELECT with SQL_CALC_FOUND_ROWS
-            if ($st =~ /SQL_CALC_FOUND_ROWS/is ) {
+            elsif ($st =~ /SQL_CALC_FOUND_ROWS/is ) {
                 $type = 'SELECT_CALC';
             }
 
-# CALL no ALWAYS returns a results set!!            
-#           # Small exception3:
-# USE LIKE THAT : /* SELECT */ CALL => Possible RESULT SET
-           if ($st =~ /SELECT/is ) {
+           # Small exception3:
+           # USE LIKE THAT : /* SELECT */ CALL => Possible RESULT SET
+           elsif ($st =~ /\bSELECT\b.*\bCALL\b/is ) {
                $type = 'SELECT';
            }
-
-
 
             $self->create_method_for(uc($type||''),$name);
         }
