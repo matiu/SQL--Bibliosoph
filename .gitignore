@@ -3,3 +3,5 @@
 *.sw?
 tags
 blib
+Makefile
+
