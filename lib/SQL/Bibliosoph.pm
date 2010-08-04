@@ -9,7 +9,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.17";
+    our $VERSION = "2.18";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -112,7 +112,7 @@ package SQL::Bibliosoph; {
     sub get_subfix {
         my ($self,$group, $ttl) = @_;
 
-        my $subfix = 1;
+        my $subfix = $^T;
 
         if (my $r = $self->memc()->get($group)) { 
             $subfix = $r;
