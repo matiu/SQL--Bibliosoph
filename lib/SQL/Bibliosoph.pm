@@ -9,7 +9,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.16";
+    our $VERSION = "2.17";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -66,13 +66,13 @@ package SQL::Bibliosoph; {
                     servers => [ { address => $self->memcached_address() },
                     ],
                     namespace           => 'biblio:',
-                    compress_threshold  => 100_000,
-                    max_failures        => 3,
+                    compress_threshold  => 10_000,
                     failure_timeout     => 5,
-                    nowait              => 1,
                     hash_namespace      => 1,
                     serialize_methods   => [ \&Storable::freeze, \&Storable::thaw ],
                     max_size            => 512 * 1024,
+#                    nowait              => 1,
+#                    max_failures        => 3,
 #                    utf8 => 1,
             }));
 
