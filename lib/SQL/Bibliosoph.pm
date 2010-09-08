@@ -9,7 +9,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.18";
+    our $VERSION = "2.19";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -129,7 +129,11 @@ package SQL::Bibliosoph; {
         my ($self, $group) = @_;
 
         if ( $self->memc() ) {
+            $self->d("Expiring group $group\n");
             $self->memc()->incr($group,1);
+        }
+        else {
+            $self->d("Could not expire \"$group\" -> Memcached not configured\n");
         }
     }
 
