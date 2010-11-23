@@ -247,8 +247,9 @@ package SQL::Bibliosoph; {
 
                     my $ret;
 
-                    $ret = $self->memc()->get($md5);
-
+                   
+                    $ret = $self->memc()->get($md5) if (! $cfg->{force} );
+                    
                     if (! defined ($ret) ) { 
                         $self->d("\t[running SQL & storing memc]\n");
                         $ret = $self->queries()->{$name}->select_many([@_],{});
