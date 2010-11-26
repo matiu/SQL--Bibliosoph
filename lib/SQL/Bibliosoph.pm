@@ -247,8 +247,12 @@ package SQL::Bibliosoph; {
 
                     my $ret;
 
-                   
-                    $ret = $self->memc()->get($md5) if (! $cfg->{force} );
+                    if (! $cfg->{force} ) {
+                        $ret = $self->memc()->get($md5);
+                    }
+                    else {
+                        $self->d("\n\t[forced to run SQL query & store result in memc 2]\n");
+                    }
                     
                     if (! defined ($ret) ) { 
                         $self->d("\t[running SQL & storing memc]\n");
@@ -319,25 +323,28 @@ package SQL::Bibliosoph; {
                             ;
                     }
 
-
-                    ## check memcached
+                    my ($val, $count);
                     my $md5 = md5_hex( join ('', $name, map { $_ // 'NULL'  } @_ ));
                     my $md5c = $md5 . '_count';
-                    my $ret = {};
-                    my ($val, $count);
-
-                    if ( $cfg->{group} ) {
-                        my $s =  $self->get_subfix($cfg->{group}, $cfg->{ttl});
-                        $md5  .= $s;
-                        $md5c .= $s;
+                    if (! $cfg->{force} ) {
+                        ## check memcached
+                        my $ret = {};
+    
+                        if ( $cfg->{group} ) {
+                            my $s =  $self->get_subfix($cfg->{group}, $cfg->{ttl});
+                            $md5  .= $s;
+                            $md5c .= $s;
+                        }
+    
+                        $ret = $self->memc()->get_multi($md5, $md5c) ;
+                        if ($ret) {
+                            $val    = $ret->{$md5};
+                            $count  = $ret->{$md5c};
+                        }
                     }
-
-                    $ret = $self->memc()->get_multi($md5, $md5c) ;
-                    if ($ret) {
-                        $val    = $ret->{$md5};
-                        $count  = $ret->{$md5c};
+                    else {
+                        $self->d("\t[forced to run SQL query & store result in memc]\n");
                     }
-
                     if (! defined $val ) { 
                         $self->d("\t[running SQL & storing memc]\n");
 
@@ -694,5 +701,3 @@ At  http://nits.com.ar/bibliosoph you can find:
 This module is only tested with MySQL. Migration to other DB engines should be
 simple accomplished. If you would like to use Bibliosoph with other DB, please 
 let me know and we can help you if you do the testing.
-    
-
