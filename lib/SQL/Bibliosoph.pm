@@ -379,7 +379,7 @@ package SQL::Bibliosoph; {
                                 ->{$name}
                                 ->select_do([@_]);
 
-                    return 0 if $ret->rows() == -1;
+                    return 0 if ($ret->rows() || 0) == -1;
                                 
                     return wantarray 
                         ? ($ret->{mysql_insertid}, $ret->rows() ) 
