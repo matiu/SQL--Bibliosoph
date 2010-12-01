@@ -215,7 +215,7 @@ package SQL::Bibliosoph::Query; {
             my $t = tv_interval( $start_time ) ;
 
             # Only if it takes more that 1ms...
-            print STDERR " [". $t *1000 . " ms] " if $t > $min_t;
+            print STDERR "\t[". $t *1000 . " ms] " if $t > $min_t;
         }
         print STDERR "\n" if $self->debug(); 
 
