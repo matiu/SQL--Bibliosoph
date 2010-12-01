@@ -254,10 +254,15 @@ package SQL::Bibliosoph; {
                         $self->d("\n\t[forced to run SQL query & store result in memc 2]\n");
                     }
                     
-                    if (! defined ($ret) ) { 
-                        $self->d("\t[running SQL & storing memc]\n");
+                    if (! defined $ret ) { 
+                        $self->d("\t[running SQL & storing memc $md5]\n");
+
+print "cfg:" . Dumper($cfg); 
+print "ret:" . Dumper($ret); 
+
                         $ret = $self->queries()->{$name}->select_many([@_],{});
 
+print "AFTER: ret:" . Dumper($ret); 
                         # $ret could be undefined is query had an error!
                         $self->memc()->set($md5, $ret, $ttl) if defined $ret;
                     }
