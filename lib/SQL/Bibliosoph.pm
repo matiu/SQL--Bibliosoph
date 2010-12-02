@@ -5,6 +5,7 @@ package SQL::Bibliosoph; {
     use Data::Dumper;
     use Digest::MD5 qw/ md5_hex /;
     use Cache::Memcached::Fast;
+    use Storable;
 
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
@@ -249,6 +250,7 @@ package SQL::Bibliosoph; {
 
                     if (! $cfg->{force} ) {
                         $ret = $self->memc()->get($md5);
+                        
                     }
                     else {
                         $self->d("\n\t[forced to run SQL query & store result in memc 2]\n");
