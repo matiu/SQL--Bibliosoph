@@ -10,7 +10,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.19";
+    our $VERSION = "2.20";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);

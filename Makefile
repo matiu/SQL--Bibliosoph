@@ -1,7 +1,7 @@
 # This Makefile is for the SQL::Bibliosoph extension to perl.
 #
 # It was generated automatically by MakeMaker version
-# 6.56 (Revision: 65600) from the contents of
+# 6.55_02 (Revision: 65502) from the contents of
 # Makefile.PL. Don't edit this file, edit Makefile.PL instead.
 #
 #       ANY CHANGES MADE HERE WILL BE LOST!
@@ -16,7 +16,7 @@
 #     BUILD_REQUIRES => {  }
 #     MIN_PERL_VERSION => q[5.010000]
 #     NAME => q[SQL::Bibliosoph]
-#     PREREQ_PM => { DBD::Mock=>undef, Package::Constants=>undef, Tie::Hash::Random=>q[1], Time::HiRes=>undef, Carp=>undef, Test::More=>q[0.88], Digest::MD5=>q[2.39], DBD::mysql=>q[4.004], Cache::Memcached::Fast=>q[0.17], Devel::Cover=>undef, Moose=>q[0.82], Tie::Array::Random=>q[1], DBI=>q[1.5] }
+#     PREREQ_PM => { DBD::Mock=>undef, Package::Constants=>undef, Tie::Hash::Random=>q[1], Storable=>undef, Time::HiRes=>undef, Carp=>undef, Test::More=>q[0.88], DBD::mysql=>q[4.004], Digest::MD5=>q[2.39], Cache::Memcached::Fast=>q[0.17], Devel::Cover=>undef, Moose=>q[0.82], Tie::Array::Random=>q[1], DBI=>q[1.5] }
 #     VERSION_FROM => q[lib/SQL/Bibliosoph.pm]
 
 # --- MakeMaker post_initialize section:
@@ -56,11 +56,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = SQL::Bibliosoph
 NAME_SYM = SQL_Bibliosoph
-VERSION = 2.19
+VERSION = 2.20
 VERSION_MACRO = VERSION
-VERSION_SYM = 2_19
+VERSION_SYM = 2_20
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 2.19
+XS_VERSION = 2.20
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -136,8 +136,8 @@ PERM_RW = 644
 PERM_RWX = 755
 
 MAKEMAKER   = /opt/local/lib/perl5/5.10.1/ExtUtils/MakeMaker.pm
-MM_VERSION  = 6.56
-MM_REVISION = 65600
+MM_VERSION  = 6.55_02
+MM_REVISION = 65502
 
 # FULLEXT = Pathname for extension directory (eg Foo/Bar/Oracle).
 # BASEEXT = Basename part of FULLEXT. May be just equal FULLEXT. (eg Oracle)
@@ -204,7 +204,7 @@ PM_TO_BLIB = lib/SQL/Bibliosoph/Dummy.pm \
 
 
 # --- MakeMaker platform_constants section:
-MM_Unix_VERSION = 6.56
+MM_Unix_VERSION = 6.55_02
 PERL_MALLOC_DEF = -DPERL_EXTMALLOC_DEF -Dmalloc=Perl_malloc -Dfree=Perl_mfree -Drealloc=Perl_realloc -Dcalloc=Perl_calloc
 
 
@@ -269,7 +269,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = SQL-Bibliosoph
-DISTVNAME = SQL-Bibliosoph-2.19
+DISTVNAME = SQL-Bibliosoph-2.20
 
 
 # --- MakeMaker macro section:
@@ -496,7 +496,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) Generating META.yml
 	$(NOECHO) $(ECHO) '--- #YAML:1.0' > META_new.yml
 	$(NOECHO) $(ECHO) 'name:               SQL-Bibliosoph' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version:            2.19' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version:            2.20' >> META_new.yml
 	$(NOECHO) $(ECHO) 'abstract:           A SQL Query library' >> META_new.yml
 	$(NOECHO) $(ECHO) 'author:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - Matias Alejo Garcia ( matiu@cpan.org ) ' >> META_new.yml
@@ -517,6 +517,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '    Moose:                0.82' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Package::Constants:   ~' >> META_new.yml
 	$(NOECHO) $(ECHO) '    perl:                 5.010000' >> META_new.yml
+	$(NOECHO) $(ECHO) '    Storable:             ~' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Test::More:           0.88' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Tie::Array::Random:   1' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Tie::Hash::Random:    1' >> META_new.yml
@@ -525,7 +526,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '    directory:' >> META_new.yml
 	$(NOECHO) $(ECHO) '        - t' >> META_new.yml
 	$(NOECHO) $(ECHO) '        - inc' >> META_new.yml
-	$(NOECHO) $(ECHO) 'generated_by:       ExtUtils::MakeMaker version 6.56' >> META_new.yml
+	$(NOECHO) $(ECHO) 'generated_by:       ExtUtils::MakeMaker version 6.55_02' >> META_new.yml
 	$(NOECHO) $(ECHO) 'meta-spec:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    url:      http://module-build.sourceforge.net/META-spec-v1.4.html' >> META_new.yml
 	$(NOECHO) $(ECHO) '    version:  1.4' >> META_new.yml
@@ -819,7 +820,7 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="2.19">' > $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="2.20">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>A SQL Query library</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Matias Alejo Garcia ( matiu@cpan.org ) </AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
@@ -833,6 +834,7 @@ ppd :
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Digest::MD5" VERSION="2.39" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" VERSION="0.82" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Package::Constants" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Storable::" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Test::More" VERSION="0.88" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Tie::Array::Random" VERSION="1" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Tie::Hash::Random" VERSION="1" />' >> $(DISTNAME).ppd
