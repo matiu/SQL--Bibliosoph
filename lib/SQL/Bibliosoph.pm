@@ -70,7 +70,7 @@ package SQL::Bibliosoph; {
                     compress_threshold  => 100_000,
                     failure_timeout     => 5,
 #                    hash_namespace      => 1, #default => 0
-                    serialize_methods   => [ \&Storable::freeze, \&Storable::thaw ],
+#                    serialize_methods   => [ \&Storable::freeze, \&Storable::thaw ],
 #                    max_size            => 512 * 1024, #default => 1024* 1024
 #                    nowait              => 1,
 #                    max_failures        => 3,
