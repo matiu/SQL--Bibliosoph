@@ -66,11 +66,11 @@ package SQL::Bibliosoph; {
                     servers => [ { address => $self->memcached_address() },
                     ],
                     namespace           => 'biblio:',
-                    compress_threshold  => 10_000,
+                    compress_threshold  => 100_000,
                     failure_timeout     => 5,
-                    hash_namespace      => 1,
+#                    hash_namespace      => 1, #default => 0
                     serialize_methods   => [ \&Storable::freeze, \&Storable::thaw ],
-                    max_size            => 512 * 1024,
+#                    max_size            => 512 * 1024, #default => 1024* 1024
 #                    nowait              => 1,
 #                    max_failures        => 3,
 #                    utf8 => 1,
