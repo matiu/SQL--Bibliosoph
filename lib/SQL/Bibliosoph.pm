@@ -509,8 +509,8 @@ SQL::Bibliosoph - A SQL Statements Library
     use SQL::Bibliosoph;
 
 
-    my $bs = SQL::Biblioshoph->new(
-            dsn      => $database_handle,
+    my $bs = SQL::Bibliosoph->new(
+            dbh      => $database_handle,
             catalog  => [ qw(users products <billing) ],
 
     # enables statement benchmarking and debug 
@@ -627,12 +627,18 @@ SQL::Bibliosoph - A SQL Statements Library
 
 =head1 DESCRIPTION
 
-SQL::Bibliosoph is a SQL statement library engine that allow to clearly separate SQL statements from PERL code. It is currently tested on MySQL 5.x, but it should be easly ported to other engines. 
+SQL::Bibliosoph is a SQL statement library engine that allow to clearly separate
+SQL statements from PERL code. It is currently tested on MySQL 5.x, but it
+should be easly ported to other engines.
 
-The catalog files are prepared a the initialization, for performance reasons. The use of prepared statement also helps to prevents SQL injection attacks.  SQL::Bibliosoph supports bind parameters in statements definition and bind parements reordering. (SEE SQL::Bibliosoph::CatalogFile for details). 
+The catalog files are prepared a the initialization, for performance reasons.
+The use of prepared statement also helps to prevents SQL injection attacks.
+SQL::Bibliosoph supports bind parameters in statements definition and bind
+parements reordering (See SQL::Bibliosoph::CatalogFile for details).
 
 
-All functions throw 'carp' on error. The error message is 'SQL ERROR' and the mysql error reported by the driver.
+All functions throw 'carp' on error. The error message is 'SQL ERROR' and the
+mysql error reported by the driver.
 
 =head1 Constructor parameters
 
@@ -641,36 +647,47 @@ All functions throw 'carp' on error. The error message is 'SQL ERROR' and the my
 The database handler. For example:
 
     my $dbh = DBI->connect($dsn, ...);
-    my $bb = SQL::Bibliosoph(dsn=>$dsn, ...);
+    my $bb  = SQL::Bibliosoph(dbh => $dbh, ...);
 
 =head3 catalog 
     
-An array ref containg filenames with the queries. This files should use de SQL::Bibliosoft::CatalogFile format (SEE Perldoc for details). The suggested extension for these files is 'bb'. The name can be preceded with a "<" forcing the catalog the be open in "read-only" mode. In the mode, UPDATE, INSERT and REPLACE statement will be parsed. Note the calling a SQL procedure or function that actually modifies the DB is still allowed!
+An array ref containg filenames with the queries. This files should use they
+SQL::Bibliosoph::CatalogFile format (SEE Perldoc for details). The suggested
+extension for these files is 'bb'. The name can be preceded with a "<" forcing
+the catalog the be open in "read-only" mode. In the mode, UPDATE, INSERT and
+REPLACE statement will be parsed. Note the calling a SQL procedure or function
+that actually modifies the DB is still allowed!
 
-All the catalogs will be merged, be carefull with namespace collisions. the statement will be prepared at module constuction.
+All the catalogs will be merged, be carefull with namespace collisions. the
+statement will be prepared at module constuction.
 
 =head3 catalog_str 
     
-Allows to define a SQL catalog using a string (not a file). The queries will be merged with Catalog files (if any).         
+Allows to define a SQL catalog using a string (not a file). The queries will be
+merged with Catalog files (if any).
     
 =head3 constants_from 
 
-In order to use the same constants in your PERL code and your SQL modules, you can declare a module using `constants_from` paramenter. Constants exported in that module (using @EXPORT) will be replaced in all catalog file before SQL preparation. The module must be in the @INC path.
-
+In order to use the same constants in your PERL code and your SQL modules, you
+can declare a module using `constants_from` paramenter. Constants exported in
+that module (using @EXPORT) will be replaced in all catalog file before SQL
+preparation. The module must be in the @INC path.
 
 =head3 delayed 
 
-Do not prepare all the statements at startup. They will be prepared individualy,  when they are used for the first time. Defaults to false(0).
+Do not prepare all the statements at startup. They will be prepared individualy,
+when they are used for the first time. Defaults to false(0).
 
 =head3 benchmark
 
-Use this to enable Query profilling. The elapsed time (in miliseconds) will be printed
-to STDERR after each query execution, if the time is bigger that `benchmark` (must be 
-given in SECONDS, can be a floating point number)
+Use this to enable Query profilling. The elapsed time (in miliseconds) will be
+printed to STDERR after each query execution, if the time is bigger that
+`benchmark` (must be given in SECONDS, can be a floating point number).
 
 =head3 debug
 
-To enable debug (prints each query, and arguments, very useful during development).
+To enable debug (prints each query, and arguments, very useful during
+development).
 
 =head1 Bibliosoph
 
@@ -678,16 +695,19 @@ n. person having deep knowledge of books. bibliognostic.
 
 =head1 AUTHORS
 
-SQL::Bibliosoph by Matias Alejo Garcia (matiu at cpan.org) and Lucas Lain (lucas at confronte.com).
+SQL::Bibliosoph by Matias Alejo Garcia (matiu at cpan.org) and Lucas Lain (lucas
+at confronte.com).
 
 =head1 COPYRIGHT
 
-Copyright (c) 2007-2010 Matias Alejo Garcia. All rights reserved.  This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+Copyright (c) 2007-2010 Matias Alejo Garcia. All rights reserved. This program
+is free software; you can redistribute it and/or modify it under the same terms
+as Perl itself.
 
 =head1 SUPPORT / WARRANTY
 
-The SQL::Bibliosoph is free Open Source software. IT COMES WITHOUT WARRANTY OF ANY KIND.
-
+The SQL::Bibliosoph is free Open Source software. IT COMES WITHOUT WARRANTY OF
+ANY KIND.
 
 =head1 SEE ALSO
     
