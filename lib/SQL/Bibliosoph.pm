@@ -10,7 +10,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.20";
+    our $VERSION = "2.21";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -695,8 +695,13 @@ n. person having deep knowledge of books. bibliognostic.
 
 =head1 AUTHORS
 
-SQL::Bibliosoph by Matias Alejo Garcia (matiu at cpan.org) and Lucas Lain (lucas
-at confronte.com).
+SQL::Bibliosoph by Matias Alejo Garcia (matiu at cpan.org) and Lucas Lain.
+
+=head1 CONTRIBUTORS
+
+Juan Ladetto
+
+WOLS
 
 =head1 COPYRIGHT
 
