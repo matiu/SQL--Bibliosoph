@@ -10,7 +10,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.20";
+    our $VERSION = "2.21";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -257,7 +257,8 @@ package SQL::Bibliosoph; {
                     }
                     
                     if (! defined $ret ) { 
-                        $self->d("\t[running SQL & storing memc $md5]\n");
+                        #$self->d("\t[running SQL & storing memc $md5]\n");
+                        $self->d("\t[running SQL & storing memc]\n");
 
 #print "cfg:" . Dumper($cfg); 
 #print "ret:" . Dumper($ret); 
