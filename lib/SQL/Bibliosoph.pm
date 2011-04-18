@@ -10,7 +10,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.21";
+    our $VERSION = "2.22";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -54,7 +54,8 @@ package SQL::Bibliosoph; {
         foreach my $fname (@{ $self->catalog() }) {
             $self->do_all_for(
                 SQL::Bibliosoph::CatalogFile->new(
-                            file            =>  $self->path() . $fname, 
+                    file            =>  $self->path() . $fname, 
+                    constants_from  => $self->constants_from(),
                 )->read()
             );
         }
@@ -105,7 +106,6 @@ package SQL::Bibliosoph; {
     sub do_all_for  {
         my ($self,$qs) = @_;
 
-        $self->replace_contants($qs);
         $self->create_queries_from($qs);
         $self->create_methods_from($qs);
     }
@@ -427,39 +427,6 @@ package SQL::Bibliosoph; {
     }
 
     #------------------------------------------------------------------
-    sub replace_contants {
-        my ($self,$qs)  =@_;
-
-        my $p = $self->constants_from() or return;
-
-        eval {
-
-            # Read constants
-            eval "require $p";
-
-            import $p;
-            my @cs = Package::Constants->list($p);
-
-            $self->d("\tConstants from $p [".@cs."]\n");
-
-
-            # DO Replace constants
-            foreach my $v (values %$qs) {
-                next if !$v;
-
-                foreach my $key (@cs) {
-                    my $value = eval "$key" ;
-                    $v =~ s/\b$key\b/$value/g;
-                }
-            }
-        };
-        if ($@) {
-            die "error importing constants from $p : $@";
-        }
-    }
-
-
-    #------------------------------------------------------------------
     sub create_queries_from {
         my ($self,$qs) = @_;
         my $i = 0;
@@ -481,7 +448,8 @@ package SQL::Bibliosoph; {
                         benchmark=> $self->benchmark(),
                         throw_errors => $self->throw_errors(),
             };
-            #print STDERR " Query for ".Dumper($args);            
+
+            # print STDERR " Query for ".Dumper($args);            
 
             # Prepare the statement
             $self->queries()->{$name} = SQL::Bibliosoph::Query->new( $args );
@@ -666,6 +634,7 @@ statement will be prepared at module constuction.
     
 Allows to define a SQL catalog using a string (not a file). The queries will be
 merged with Catalog files (if any).
+
     
 =head3 constants_from 
 
@@ -673,6 +642,8 @@ In order to use the same constants in your PERL code and your SQL modules, you
 can declare a module using `constants_from` paramenter. Constants exported in
 that module (using @EXPORT) will be replaced in all catalog file before SQL
 preparation. The module must be in the @INC path.
+
+Note: constants_from() is ignored in 'catalog_str' queries (sorry, not implemented, yet)
 
 =head3 delayed 
 

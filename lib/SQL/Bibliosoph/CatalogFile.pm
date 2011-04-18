@@ -3,11 +3,13 @@ package SQL::Bibliosoph::CatalogFile; {
     use utf8;
 	use Carp;
 	use Data::Dumper;
+    use Package::Constants; 
 
     our $VERSION = "2.00";
 
-    has file     => ( is => 'rw', isa=>'Str',  required => 1 );
-    has read_only=> ( is => 'rw', isa=>'Bool', default => 0 );
+    has file                => ( is => 'rw', isa=>'Str',  required => 1 );
+    has read_only           => ( is => 'rw', isa=>'Bool', default => 0 );
+    has 'constants_from'    => ( is => 'ro', isa => 'Maybe[Str]');
 
 	#------------------------------------------------------------------
 
@@ -26,10 +28,39 @@ package SQL::Bibliosoph::CatalogFile; {
 		croak "File does not exists $file " if ! -e $file;
 	}
 
+    #------------------------------------------------------------------
+    sub replace_contants {
+        my ($self, $pstr)  =@_;
+
+        my $p = $self->constants_from() or return;
+
+        eval {
+
+            # Read constants
+            eval "require $p";
+
+            import $p;
+            my @cs = Package::Constants->list($p);
+
+            # DO Replace constants
+            foreach my $key (@cs) {
+                my $value = eval "$key" ;
+                $$pstr =~ s/\b$key\b/$value/g;
+            }
+        };
+        if ($@) {
+            die "error importing constants from $p : $@";
+        }
+    }
+
+    #------------------------------------------------------------------
+
 	sub read {
 		my ($self) = @_;
 
 		my $file_contents= $self->file_to_str( $self->file() ); 
+
+        $self->replace_contants(\$file_contents);
 
 		my $qs = $self->_parse($file_contents);
 
