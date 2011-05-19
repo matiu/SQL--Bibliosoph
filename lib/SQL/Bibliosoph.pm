@@ -10,7 +10,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.22";
+    our $VERSION = "2.30";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -110,32 +110,41 @@ package SQL::Bibliosoph; {
         $self->create_methods_from($qs);
     }
 
-    sub get_subfix {
-        my ($self,$group, $ttl) = @_;
-
-        my $subfix = $^T;
-
-        if (my $r = $self->memc()->get($group)) { 
-            $subfix = $r;
-        }
-        else {
-            $self->memc()->set($group, $subfix, $ttl);
-        }
-
-        return '-v' . $subfix;
-    }
-
-
     sub expire_group {
         my ($self, $group) = @_;
 
         if ( $self->memc() ) {
             $self->d("Expiring group $group\n");
-            $self->memc()->incr($group,1);
+
+
+            my $md5s = $self->memc()->get($group . '-g');
+            foreach (split /:/, $md5s) {
+                next if ! $_;
+            
+#$self->d("\t\t expiring query in group $group : $_");
+
+                $self->memc()->delete($_);
+            }
+            $self->memc()->delete( $group . '-g' );
         }
         else {
             $self->d("Could not expire \"$group\" -> Memcached not configured\n");
         }
+    }
+
+
+    sub add_to_group {
+        my ($self, $group, $md5, $md5c) = @_;
+
+        $group = $group . '-g';
+        $md5 .= ':' . $md5c if $md5c;
+        $md5 .= ':';
+
+        $self->memc()->append( $group, $md5) 
+            || $self->memc()->set( $group, $md5)
+            ;
+
+#$self->d("\t\t storing query in group ".$group ."$md5");
     }
 
     sub create_methods_from {
@@ -242,22 +251,16 @@ package SQL::Bibliosoph; {
                     ## check memcached
                     my $md5 = md5_hex( join ('', $name, map { $_ // 'NULL'  } @_ ));
 
-                    $md5 .= $self->get_subfix($cfg->{group}, $cfg->{ttl}) 
-                        if $cfg->{group};
-                    
-
                     my $ret;
 
                     if (! $cfg->{force} ) {
                         $ret = $self->memc()->get($md5);
-                        
                     }
                     else {
-                        $self->d("\n\t[forced to run SQL query & store result in memc 2]\n");
+                        $self->d("\n\t[forced to run SQL query & store result in memc (rowh)]\n");
                     }
                     
                     if (! defined $ret ) { 
-                        #$self->d("\t[running SQL & storing memc $md5]\n");
                         $self->d("\t[running SQL & storing memc]\n");
 
 #print "cfg:" . Dumper($cfg); 
@@ -267,7 +270,13 @@ package SQL::Bibliosoph; {
 
 #print "AFTER: ret:" . Dumper($ret); 
                         # $ret could be undefined is query had an error!
-                        $self->memc()->set($md5, $ret, $ttl) if defined $ret;
+                        if (defined $ret) {
+                            $self->memc()->set($md5, $ret, $ttl);
+
+                            $self->add_to_group($cfg->{group}, $md5) if $cfg->{group};
+                        }
+
+                        ##
                     }
                     else {
                         $self->d("\t[from memc]\n");
@@ -334,17 +343,13 @@ package SQL::Bibliosoph; {
                     my ($val, $count);
                     my $md5 = md5_hex( join ('', $name, map { $_ // 'NULL'  } @_ ));
                     my $md5c = $md5 . '_count';
+
                     if (! $cfg->{force} ) {
                         ## check memcached
                         my $ret = {};
     
-                        if ( $cfg->{group} ) {
-                            my $s =  $self->get_subfix($cfg->{group}, $cfg->{ttl});
-                            $md5  .= $s;
-                            $md5c .= $s;
-                        }
-    
                         $ret = $self->memc()->get_multi($md5, $md5c) ;
+
                         if ($ret) {
                             $val    = $ret->{$md5};
                             $count  = $ret->{$md5c};
@@ -353,16 +358,22 @@ package SQL::Bibliosoph; {
                     else {
                         $self->d("\t[forced to run SQL query & store result in memc]\n");
                     }
+
                     if (! defined $val ) { 
                         $self->d("\t[running SQL & storing memc]\n");
 
                         ($val, $count)
                             = $self->queries()->{$name}->select_many2([@_],{});
 
-                        $self->memc()->set_multi( 
-                                [ $md5,  $val,      $ttl],
-                                [ $md5c, $count,    $ttl],
-                        ) if defined $val;
+                        if ( defined $val) {       
+                            $self->memc()->set_multi( 
+                                    [ $md5,  $val,      $ttl],
+                                    [ $md5c, $count,    $ttl],
+                            );
+
+
+                            $self->add_to_group($cfg->{group}, $md5, $md5c ) if $cfg->{group};
+                        }
                     }
                     else {
                         $self->d("\t[from memc]\n");
@@ -458,12 +469,7 @@ package SQL::Bibliosoph; {
         }
         $self->d("\tPrepared $i Statements". ( $self->delayed() ? " (delayed) " : '' ). "\n");
     }
-
-
-
 }
-
-
 
 1;
 
