@@ -116,15 +116,17 @@ package SQL::Bibliosoph; {
         if ( $self->memc() ) {
             $self->d("Expiring group $group\n");
 
-
-            my $md5s = $self->memc()->get($group . '-g');
-            foreach (split /:/, $md5s) {
-                next if ! $_;
             
+            if (my $md5s = $self->memc()->get($group . '-g') ) {
+
+                foreach (split /:/, $md5s) {
+                    next if ! $_;
 #$self->d("\t\t expiring query in group $group : $_");
 
-                $self->memc()->delete($_);
+                    $self->memc()->delete($_);
+                }
             }
+
             $self->memc()->delete( $group . '-g' );
         }
         else {
