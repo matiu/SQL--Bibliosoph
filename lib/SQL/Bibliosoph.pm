@@ -251,7 +251,7 @@ package SQL::Bibliosoph; {
 
 
                     ## check memcached
-                    my $md5 = md5_hex( join ('', $name, map { $_ // 'NULL'  } @_ ));
+                    my $md5 = md5_hex( join (',', $name, map { $_ // 'NULL'  } @_ ));
 
                     my $ret;
 
@@ -343,7 +343,7 @@ package SQL::Bibliosoph; {
                     }
 
                     my ($val, $count);
-                    my $md5 = md5_hex( join ('', $name, map { $_ // 'NULL'  } @_ ));
+                    my $md5 = md5_hex( join (',', $name, map { $_ // 'NULL'  } @_ ));
                     my $md5c = $md5 . '_count';
 
                     if (! $cfg->{force} ) {
