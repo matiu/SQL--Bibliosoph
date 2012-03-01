@@ -10,7 +10,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.30";
+    our $VERSION = "2.40";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -119,6 +119,7 @@ package SQL::Bibliosoph; {
             
             if (my $md5s = $self->memc()->get($group . '-g') ) {
 
+
                 foreach (split /:/, $md5s) {
                     next if ! $_;
 #$self->d("\t\t expiring query in group $group : $_");
@@ -138,13 +139,24 @@ package SQL::Bibliosoph; {
     sub add_to_group {
         my ($self, $group, $md5, $md5c) = @_;
 
+
         $group = $group . '-g';
+
+        my $all_md5s = $self->memc()->get( $group);
+
+        if ( $all_md5s && index($all_md5s, $md5) >= 0 ) {
+#$self->d("\t\t already stored:g:  ".$group ." md5: $md5");
+                return;
+        }
+
+
         $md5 .= ':' . $md5c if $md5c;
         $md5 .= ':';
 
         $self->memc()->append( $group, $md5) 
             || $self->memc()->set( $group, $md5)
             ;
+
 
 #$self->d("\t\t storing query in group ".$group ."$md5");
     }
