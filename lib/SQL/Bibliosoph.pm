@@ -10,13 +10,13 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.40";
+    our $VERSION = "2.45";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
     has 'catalog'   => ( is => 'ro', isa => 'ArrayRef', default => sub { return [] } );
     has 'catalog_str'=>( is => 'ro', isa => 'Maybe[Str]');
-    has 'memcached_address' => ( is => 'ro', isa => 'Maybe[Str]' );
+    has 'memcached_address' => ( is => 'ro');
 
     has 'constants_from' =>( is => 'ro', isa => 'Maybe[Str]');
 
@@ -61,12 +61,21 @@ package SQL::Bibliosoph; {
         }
 
         #
-        if ($self->memcached_address() ) {
-            $self->d('Using memcached server at '.$self->memcached_address(). "\n");
+        if (my $s = $self->memcached_address() ) {
+
+            my $servers;
+
+            if ( ref($s) ) {
+                $servers = $s;
+            }
+            else {
+                $servers = [ { address => $s } ],
+            }            
+
+            $self->d('Using memcached' . Dumper($servers) );
 
             $self->memc( new Cache::Memcached::Fast({
-                    servers => [ { address => $self->memcached_address() },
-                    ],
+                    servers             => $servers,
                     namespace           => 'biblio:',
                     compress_threshold  => 100_000,
                     failure_timeout     => 5,
@@ -511,7 +520,11 @@ SQL::Bibliosoph - A SQL Statements Library
 
     # enables memcached usage            
             memcached_address => '127.0.0.1:11322',
+
+    # enables memcached usage  (multiple servers)            
+            memcached_address => ['127.0.0.1:11322','127.0.0.2:11322']
     );
+
 
 
     # Using dynamic generated functions.  Wrapper funtions 

@@ -1,7 +1,7 @@
 # This Makefile is for the SQL::Bibliosoph extension to perl.
 #
 # It was generated automatically by MakeMaker version
-# 6.58 (Revision: 65800) from the contents of
+# 6.59 (Revision: 65900) from the contents of
 # Makefile.PL. Don't edit this file, edit Makefile.PL instead.
 #
 #       ANY CHANGES MADE HERE WILL BE LOST!
@@ -57,11 +57,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = SQL::Bibliosoph
 NAME_SYM = SQL_Bibliosoph
-VERSION = 2.40
+VERSION = 2.45
 VERSION_MACRO = VERSION
-VERSION_SYM = 2_40
+VERSION_SYM = 2_45
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 2.40
+XS_VERSION = 2.45
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -137,8 +137,8 @@ PERM_RW = 644
 PERM_RWX = 755
 
 MAKEMAKER   = /opt/local/lib/perl5/5.10.1/ExtUtils/MakeMaker.pm
-MM_VERSION  = 6.58
-MM_REVISION = 65800
+MM_VERSION  = 6.59
+MM_REVISION = 65900
 
 # FULLEXT = Pathname for extension directory (eg Foo/Bar/Oracle).
 # BASEEXT = Basename part of FULLEXT. May be just equal FULLEXT. (eg Oracle)
@@ -205,7 +205,7 @@ PM_TO_BLIB = lib/SQL/Bibliosoph/Dummy.pm \
 
 
 # --- MakeMaker platform_constants section:
-MM_Unix_VERSION = 6.58
+MM_Unix_VERSION = 6.59
 PERL_MALLOC_DEF = -DPERL_EXTMALLOC_DEF -Dmalloc=Perl_malloc -Dfree=Perl_mfree -Drealloc=Perl_realloc -Dcalloc=Perl_calloc
 
 
@@ -270,7 +270,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = SQL-Bibliosoph
-DISTVNAME = SQL-Bibliosoph-2.40
+DISTVNAME = SQL-Bibliosoph-2.45
 
 
 # --- MakeMaker macro section:
@@ -789,7 +789,7 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="2.40">' > $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="2.45">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>A SQL Query library</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Matias Alejo Garcia ( matiu@cpan.org ) </AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
