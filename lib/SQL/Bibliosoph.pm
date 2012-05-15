@@ -10,7 +10,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.45";
+    our $VERSION = "2.46";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -417,8 +417,8 @@ package SQL::Bibliosoph; {
 
             /^INSERT/ && do {
                 # Returns
-                #  scalar :  last_insert_id 
-                #  array  :  (last insert_id, row_count)
+                #  scalar :  last_insert_id (only mysql)
+                #  array  :  (last insert_id (only mysql), row_count)
 
                 # do
                 *$name = sub {
@@ -592,6 +592,15 @@ SQL::Bibliosoph - A SQL Statements Library
 
     # Usefull when no primary key is defined
     my ($dummy_last_insert_id, $total_inserted) = $bs->insert_person($name,$age);
+
+    Note that last_insert_id is only returned when using MYSQL (undef in other case).
+    When using other engine you need to call an other query to get the last value. 
+    For example, in ProgreSQL you can define:
+    
+    --[ LAST_VAL ]
+         SELECT lastval()
+    
+    and then call LAST_VAL after an insert.
 
 
     # Updating some rows

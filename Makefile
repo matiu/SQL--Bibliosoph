@@ -1,7 +1,7 @@
 # This Makefile is for the SQL::Bibliosoph extension to perl.
 #
 # It was generated automatically by MakeMaker version
-# 6.59 (Revision: 65900) from the contents of
+# 6.58 (Revision: 65800) from the contents of
 # Makefile.PL. Don't edit this file, edit Makefile.PL instead.
 #
 #       ANY CHANGES MADE HERE WILL BE LOST!
@@ -137,8 +137,8 @@ PERM_RW = 644
 PERM_RWX = 755
 
 MAKEMAKER   = /opt/local/lib/perl5/5.10.1/ExtUtils/MakeMaker.pm
-MM_VERSION  = 6.59
-MM_REVISION = 65900
+MM_VERSION  = 6.58
+MM_REVISION = 65800
 
 # FULLEXT = Pathname for extension directory (eg Foo/Bar/Oracle).
 # BASEEXT = Basename part of FULLEXT. May be just equal FULLEXT. (eg Oracle)
@@ -205,7 +205,7 @@ PM_TO_BLIB = lib/SQL/Bibliosoph/Dummy.pm \
 
 
 # --- MakeMaker platform_constants section:
-MM_Unix_VERSION = 6.59
+MM_Unix_VERSION = 6.58
 PERL_MALLOC_DEF = -DPERL_EXTMALLOC_DEF -Dmalloc=Perl_malloc -Dfree=Perl_mfree -Drealloc=Perl_realloc -Dcalloc=Perl_calloc
 
 
