@@ -45,6 +45,7 @@ is(ref($q),'ARRAY','Simple query 3');
 $q = $bb->rowh_USERS3();
 is(ref($q),'HASH','Simple query 3');
 
-
+$q = $bb->USERS3_sth();
+is(ref($q), 'DBI::st', 'Simple query 3 STH');
 
 done_testing();
