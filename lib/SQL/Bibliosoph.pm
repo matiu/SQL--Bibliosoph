@@ -308,6 +308,14 @@ package SQL::Bibliosoph; {
                     return $ret || [];
                 };
 
+				# Get statement handle instead of results.
+				$name_row = $name . '_sth';
+				*$name_row = sub {
+					my ($that) = shift;
+					$self->d('sth   ', $name, @_);
+					return $self->queries()->{$name}->select_do([@_]);
+				};
+
                 last SW;
             };
 
@@ -561,6 +569,11 @@ SQL::Bibliosoph - A SQL Statements Library
 
     my $products_array_of_hash_ref 
         = $bs->h_get_products($country,$price,$start,$limit);
+
+
+	# To get a prepared and executed statement handle, append '_sth':
+	my $sth = $bs->get_products_sth($country, $price, $start, $limit);
+
 
     # Selecting only one row (add row_ at the begining)
     # Query:
