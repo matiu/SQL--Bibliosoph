@@ -57,11 +57,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = SQL::Bibliosoph
 NAME_SYM = SQL_Bibliosoph
-VERSION = 2.46
+VERSION = 2.47
 VERSION_MACRO = VERSION
-VERSION_SYM = 2_46
+VERSION_SYM = 2_47
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 2.46
+XS_VERSION = 2.47
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -270,7 +270,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = SQL-Bibliosoph
-DISTVNAME = SQL-Bibliosoph-2.46
+DISTVNAME = SQL-Bibliosoph-2.47
 
 
 # --- MakeMaker macro section:
@@ -530,7 +530,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  Tie::Hash::Random: 1' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Time::HiRes: 1.97' >> META_new.yml
 	$(NOECHO) $(ECHO) '  perl: 5.010000' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: 2.46' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: 2.47' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
 	$(NOECHO) $(ECHO) '{' > META_new.json
@@ -585,7 +585,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "release_status" : "stable",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "2.46"' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "2.47"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
 
@@ -881,7 +881,7 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="2.46">' > $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="2.47">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>A SQL Query library</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Matias Alejo Garcia ( matiu@cpan.org ) </AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd

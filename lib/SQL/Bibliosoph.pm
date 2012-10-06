@@ -221,7 +221,7 @@ package SQL::Bibliosoph; {
                 # Many
                 *$name = sub {
                     my ($that) = shift;
-                    $self->d('many ',$name,@_);
+                    $self->d('Q ',$name,@_);
                     return $self->queries()->{$name}->select_many([@_]);
                 };
 
@@ -230,7 +230,7 @@ package SQL::Bibliosoph; {
                 # Many
                 *$name_row = sub {
                     my ($that) = shift;
-                    $self->d('manyh ',$name,@_);
+                    $self->d('Q ',$name_row,@_);
                     return $self->queries()->{$name}->select_many([@_],{});
                 };
 
@@ -239,7 +239,7 @@ package SQL::Bibliosoph; {
 
                 *$name_row = sub {
                     my ($that) = shift;
-                    $self->d('row  ',$name,@_);
+                    $self->d('Q ',$name_row,@_);
                     return $self->queries()->{$name}->select_row([@_]);
                 };
 
@@ -248,7 +248,7 @@ package SQL::Bibliosoph; {
 
                 *$name_row = sub {
                     my ($that) = shift;
-                    $self->d('rowh  ',$name,@_);
+                    $self->d('Q ',$name_row,@_);
                     return $self->queries()->{$name}->select_row_hash([@_]);
                 };
 
@@ -261,7 +261,7 @@ package SQL::Bibliosoph; {
                     my $ttl;
                     my $cfg  = shift @_;
 
-                    $self->d('manyCh',$name,@_);
+                    $self->d('Q ',$name_row,@_);
 
                     croak "we calling a ch_* function, first argument must be a hash_ref and must have a 'ttl' keyword" if  ref ($cfg) ne 'HASH' || ! ( $ttl = $cfg->{ttl} );
 
