@@ -1,6 +1,6 @@
 use ExtUtils::MakeMaker;
 
-use 5.10.0;
+use 5.10.1;
 
 WriteMakefile(
 	NAME            => 'SQL::Bibliosoph',
@@ -14,14 +14,13 @@ WriteMakefile(
             'Tie::Array::Random'=> 1.0,
             'Tie::Hash::Random' => 1.0,
 			'Moose'             => 0.82,
-            'DBD::Mock'         => undef,
-			'Time::HiRes'       => undef,
-			'Carp'				=> undef,
-			'Package::Constants'=> undef,
-            'Devel::Cover'      => undef,
+            'DBD::Mock'         => 1.43,
+			'Time::HiRes'       => 1.97,
+			'Carp'				=> 1.25,
+			'Package::Constants'=> 0.02,
             'Digest::MD5'       => 2.39,
             'Cache::Memcached::Fast' => 0.17,
-            'Storable'          => undef,
+            'Storable'          => 2.30,
         },
     MIN_PERL_VERSION => '5.10.0',
 );

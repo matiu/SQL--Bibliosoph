@@ -10,7 +10,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.46";
+    our $VERSION = "2.47";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -33,7 +33,7 @@ package SQL::Bibliosoph; {
 
     sub d {
         my $self = shift;
-        print STDERR join (' ', map { $_ // 'NULL'  } @_ )  if $self->debug(); 
+        print STDERR join (':', map { $_ // 'NULL'  } @_ )  if $self->debug(); 
     }
 
     #------------------------------------------------------------------
