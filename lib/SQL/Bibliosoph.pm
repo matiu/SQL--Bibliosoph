@@ -33,7 +33,8 @@ package SQL::Bibliosoph; {
 
     sub d {
         my $self = shift;
-        print STDERR join (':', map { $_ // 'NULL'  } @_ )  if $self->debug(); 
+        my $name = shift;
+        print STDERR $name.join (':', map { $_ // 'NULL'  } @_ )  if $self->debug(); 
     }
 
     #------------------------------------------------------------------
