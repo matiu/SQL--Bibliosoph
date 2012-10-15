@@ -263,7 +263,9 @@ package SQL::Bibliosoph; {
 
                     $self->d('Q ch_',$name,@_);
 
-                    croak "we calling a ch_* function, first argument must be a hash_ref and must have a 'ttl' keyword" if  ref ($cfg) ne 'HASH' || ! ( $ttl = $cfg->{ttl} );
+                    SQL::Bibliosoph::Exception::CallError->throw(
+                        desc => "when calling a ch_* function, first argument must be a hash_ref and must have a 'ttl' keyword"
+                    ) if  ref ($cfg) ne 'HASH' || ! ( $ttl = $cfg->{ttl} );
 
                     if (! $self->memc() ) {
                         $self->d("\n\tMemcached is NOT used, no server is defined");
@@ -361,7 +363,9 @@ package SQL::Bibliosoph; {
 
                     $self->d('Q ch_',$name,@_);
 
-                    croak "we calling a ch_* function, first argument must be a hash_ref and must have a 'ttl' keyword" if  ref ($cfg) ne 'HASH' || ! ( $ttl = $cfg->{ttl} );
+                    SQL::Bibliosoph::Exception::CallError->throw(
+                        desc => "when calling a ch_* function, first argument must be a hash_ref and must have a 'ttl' keyword"
+                    ) if  ref ($cfg) ne 'HASH' || ! ( $ttl = $cfg->{ttl} );
 
                     if (! $self->memc() ) {
                         $self->d("\n\tMemcached is NOT used, no server is defined");

@@ -1,6 +1,5 @@
 package SQL::Bibliosoph::Query; {
 	use Moose;
-	use Carp;
 	use DBI;
     use Data::Dumper;
     use Time::HiRes qw(gettimeofday tv_interval);
@@ -46,7 +45,9 @@ package SQL::Bibliosoph::Query; {
         #say 'Preparing "' . $self->name() ;
 
 		$self->sth( $self->dbh()->prepare_cached($st) )
-					or croak "error preparing :  $st";
+            or SQL::Bibliosoph::Exception::QuerySyntaxError->throw(
+                desc => "error preparing :  $st"
+        );
 
 		# Set numeric bind variables
 		foreach (@$numeric_fields) {
@@ -141,9 +142,9 @@ package SQL::Bibliosoph::Query; {
 		}
 		$self->bind_params($total);
 
-        croak "Bad statament use ALL numbered bind variables, or NONE, but don't mix them in $$st " 
-            if $numbered && $numbered != $total;
-
+        SQL::Bibliosoph::Exception::QuerySyntaxError->throw(
+            desc => "Bad statament use ALL numbered bind variables, or NONE, but don't mix them in $$st"
+        ) if $numbered && $numbered != $total;
 
 		# Replaces nums
 		$$st =~ s/\#?\d*?\?/?/g;
