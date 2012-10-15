@@ -119,8 +119,8 @@ package SQL::Bibliosoph::CatalogFile; {
 		my $FH;
 		open ($FH,$file) 
 			or SQL::Bibliosoph::Exception::CatalogFileError->throw(
-            desc => "Could not read \"".$file."\" : $!"
-        ) if ! -e $file;
+                desc => "Could not read \"".$file."\" : $!"
+        ); 
 
 		my @all = <$FH>;
 		close ($FH);

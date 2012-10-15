@@ -202,7 +202,10 @@ package SQL::Bibliosoph::Query; {
                     . '\"'
                     ;
 
-            if ($self->throw_errors() ) {
+            if (
+                $self->throw_errors() == 2
+                || ($self->throw_errors() == 1 && $e !~ /\sDuplicate entry\s/ )
+            ) {
                # $sth->err and $DBI::err will be true if error was from DBI
                SQL::Bibliosoph::Exception::QuerySyntaxError->throw (
                    desc => $e,

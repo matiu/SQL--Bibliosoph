@@ -720,6 +720,14 @@ printed to STDERR after each query execution, if the time is bigger that
 To enable debug (prints each query, and arguments, very useful during
 development).
 
+=head3 throw_errors
+Enable by default. Will throw SQL::Bibliosoph::Exceptions on errors. If disabled,
+will print to STDERR. By default, duplicate key errors are not throwed are exception
+set this variable to '2' if you want that.
+
+
+=head3 duplicate_key 
+
 =head1 Bibliosoph
 
 n. person having deep knowledge of books. bibliognostic.
