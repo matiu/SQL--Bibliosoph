@@ -1,7 +1,6 @@
 package SQL::Bibliosoph; {
     use Moose;
 
-    use Carp;
     use Data::Dumper;
     use Digest::MD5 qw/ md5_hex /;
     use Cache::Memcached::Fast;
@@ -10,7 +9,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.47";
+    our $VERSION = "2.50";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -662,8 +661,8 @@ SQL::Bibliosoph supports bind parameters in statements definition and bind
 parements reordering (See SQL::Bibliosoph::CatalogFile for details).
 
 
-All functions throw 'carp' on error. The error message is 'SQL ERROR' and the
-mysql error reported by the driver.
+All functions throw 'SQL::Bibliosoph::Exception::QuerySyntaxError' on error. The 
+error message is 'SQL ERROR' and the mysql error reported by the driver.
 
 =head1 Constructor parameters
 

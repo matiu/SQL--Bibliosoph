@@ -17,6 +17,10 @@ SELECT * FROM users WHERE id = #1? AND name = 2?
 --[ USERS3 ]
 SELECT * FROM users WHERE id = #1? AND name = 2?
 
+--[ BROKEN ]
+SELECT * BROKEN users WHERE id = #1? AND name = 2?
+
+
 
 
 END
@@ -27,7 +31,8 @@ my $dbh = DBI->connect('DBI:Mock:', '', '')
 
 require_ok('SQL::Bibliosoph');
 
-my $bb = new SQL::Bibliosoph( {dbh => $dbh, catalog_str => $str  } );
+my $bb = new SQL::Bibliosoph( {dbh => $dbh, catalog_str => $str, 
+        } );
 
 isa_ok($bb,'SQL::Bibliosoph');
 
@@ -47,5 +52,7 @@ is(ref($q),'HASH','Simple query 3');
 
 $q = $bb->USERS3_sth();
 is(ref($q), 'DBI::st', 'Simple query 3 STH');
+
+
 
 done_testing();

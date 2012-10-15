@@ -21,6 +21,7 @@ WriteMakefile(
             'Digest::MD5'       => 2.39,
             'Cache::Memcached::Fast' => 0.17,
             'Storable'          => 2.30,
+            'Exception::Class'  => 1.30,
         },
     MIN_PERL_VERSION => '5.10.0',
 );

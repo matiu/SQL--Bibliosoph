@@ -7,6 +7,7 @@ package SQL::Bibliosoph::Query; {
     use feature qw(say);
 
     use SQL::Bibliosoph::Dummy;
+    use SQL::Bibliosoph::Exceptions;
 
     our $VERSION = "2.00";
 
@@ -22,7 +23,7 @@ package SQL::Bibliosoph::Query; {
     has bind_links => ( is => 'rw', default => sub { return []; } );
     has bind_params=> ( is => 'rw');
 
-    has throw_errors=> ( is => 'rw', default=> 1);
+    has throw_errors=> ( is => 'rw', default => 1);
 
 
 
@@ -202,7 +203,9 @@ package SQL::Bibliosoph::Query; {
 
             if ($self->throw_errors() ) {
                # $sth->err and $DBI::err will be true if error was from DBI
-               carp $e unless $self->quiet() ; # print the error
+               SQL::Bibliosoph::Exception::QuerySyntaxError->throw (
+                   desc => $e,
+               ) unless $self->quiet() ; # print the error
             }
             else {
                 print STDERR $e;        

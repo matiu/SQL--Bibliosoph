@@ -17,7 +17,7 @@
 #     CONFIGURE_REQUIRES => {  }
 #     MIN_PERL_VERSION => q[5.010000]
 #     NAME => q[SQL::Bibliosoph]
-#     PREREQ_PM => { DBD::Mock=>q[1.43], Package::Constants=>q[0.02], Tie::Hash::Random=>q[1], Storable=>q[2.3], Time::HiRes=>q[1.97], Carp=>q[1.25], Test::More=>q[0.88], Digest::MD5=>q[2.39], DBD::mysql=>q[4.004], Cache::Memcached::Fast=>q[0.17], Moose=>q[0.82], Tie::Array::Random=>q[1], DBI=>q[1.5] }
+#     PREREQ_PM => { DBD::Mock=>q[1.43], Package::Constants=>q[0.02], Tie::Hash::Random=>q[1], Storable=>q[2.3], Time::HiRes=>q[1.97], Carp=>q[1.25], Exception::Class=>q[1.3], Test::More=>q[0.88], DBD::mysql=>q[4.004], Digest::MD5=>q[2.39], Cache::Memcached::Fast=>q[0.17], Moose=>q[0.82], Tie::Array::Random=>q[1], DBI=>q[1.5] }
 #     VERSION_FROM => q[lib/SQL/Bibliosoph.pm]
 
 # --- MakeMaker post_initialize section:
@@ -57,11 +57,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = SQL::Bibliosoph
 NAME_SYM = SQL_Bibliosoph
-VERSION = 2.47
+VERSION = 2.50
 VERSION_MACRO = VERSION
-VERSION_SYM = 2_47
+VERSION_SYM = 2_50
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 2.47
+XS_VERSION = 2.50
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -189,10 +189,13 @@ PERL_ARCHIVE_AFTER =
 TO_INST_PM = lib/SQL/Bibliosoph.pm \
 	lib/SQL/Bibliosoph/CatalogFile.pm \
 	lib/SQL/Bibliosoph/Dummy.pm \
+	lib/SQL/Bibliosoph/Exceptions.pm \
 	lib/SQL/Bibliosoph/Query.pm \
 	lib/SQL/Bibliosoph/Sims.pm
 
-PM_TO_BLIB = lib/SQL/Bibliosoph/Dummy.pm \
+PM_TO_BLIB = lib/SQL/Bibliosoph/Exceptions.pm \
+	blib/lib/SQL/Bibliosoph/Exceptions.pm \
+	lib/SQL/Bibliosoph/Dummy.pm \
 	blib/lib/SQL/Bibliosoph/Dummy.pm \
 	lib/SQL/Bibliosoph/Query.pm \
 	blib/lib/SQL/Bibliosoph/Query.pm \
@@ -270,7 +273,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = SQL-Bibliosoph
-DISTVNAME = SQL-Bibliosoph-2.47
+DISTVNAME = SQL-Bibliosoph-2.50
 
 
 # --- MakeMaker macro section:
@@ -522,6 +525,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  DBD::mysql: 4.004' >> META_new.yml
 	$(NOECHO) $(ECHO) '  DBI: 1.5' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Digest::MD5: 2.39' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Exception::Class: 1.3' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Moose: 0.82' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Package::Constants: 0.02' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Storable: 2.3' >> META_new.yml
@@ -530,7 +534,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  Tie::Hash::Random: 1' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Time::HiRes: 1.97' >> META_new.yml
 	$(NOECHO) $(ECHO) '  perl: 5.010000' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: 2.47' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: 2.50' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
 	$(NOECHO) $(ECHO) '{' > META_new.json
@@ -573,6 +577,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '            "DBD::mysql" : "4.004",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "DBI" : "1.5",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "Digest::MD5" : "2.39",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Exception::Class" : "1.3",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "Moose" : "0.82",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "Package::Constants" : "0.02",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "Storable" : "2.3",' >> META_new.json
@@ -585,7 +590,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "release_status" : "stable",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "2.47"' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "2.50"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
 
@@ -881,7 +886,7 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="2.47">' > $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="2.50">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>A SQL Query library</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Matias Alejo Garcia ( matiu@cpan.org ) </AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
@@ -892,6 +897,7 @@ ppd :
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBD::mysql" VERSION="4.004" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBI::" VERSION="1.5" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Digest::MD5" VERSION="2.39" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Exception::Class" VERSION="1.3" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" VERSION="0.82" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Package::Constants" VERSION="0.02" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Storable::" VERSION="2.3" />' >> $(DISTNAME).ppd
@@ -909,6 +915,7 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  lib/SQL/Bibliosoph/Exceptions.pm blib/lib/SQL/Bibliosoph/Exceptions.pm \
 	  lib/SQL/Bibliosoph/Dummy.pm blib/lib/SQL/Bibliosoph/Dummy.pm \
 	  lib/SQL/Bibliosoph/Query.pm blib/lib/SQL/Bibliosoph/Query.pm \
 	  lib/SQL/Bibliosoph.pm blib/lib/SQL/Bibliosoph.pm \
