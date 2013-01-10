@@ -9,7 +9,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.51";
+    our $VERSION = "2.52";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -25,6 +25,7 @@ package SQL::Bibliosoph; {
 
     has 'queries'   => ( is => 'rw', default=> sub { return {}; } );
     has 'memc'      => ( is => 'rw');
+    has 'log_prefix'=> ( is => 'rw');
     has throw_errors=> ( is => 'rw', default=> 1);
 
     ## OLD (just for backwards compat)
@@ -33,13 +34,18 @@ package SQL::Bibliosoph; {
     sub d {
         my $self = shift;
         my $name = shift;
-        print STDERR $name.join (':', map { $_ // 'NULL'  } @_ )  if $self->debug(); 
+        print STDERR 
+            $self->log_prefix() 
+            . $name 
+            . join (':', map { $_ // 'NULL'  } @_ )  if $self->debug(); 
     }
 
     #------------------------------------------------------------------
 
     sub BUILD {
         my ($self) = @_;
+
+        $self->log_prefix('') if ! $self->log_prefix();
 
         $self->d( "Constructing Bibliosoph\n" ) ;
 
