@@ -1,12 +1,12 @@
 package SQL::Bibliosoph::Query; {
 	use Moose;
-	use Carp;
 	use DBI;
     use Data::Dumper;
     use Time::HiRes qw(gettimeofday tv_interval);
     use feature qw(say);
 
     use SQL::Bibliosoph::Dummy;
+    use SQL::Bibliosoph::Exceptions;
 
     our $VERSION = "2.00";
 
@@ -22,7 +22,7 @@ package SQL::Bibliosoph::Query; {
     has bind_links => ( is => 'rw', default => sub { return []; } );
     has bind_params=> ( is => 'rw');
 
-    has throw_errors=> ( is => 'rw', default=> 1);
+    has throw_errors=> ( is => 'rw', default => 1);
 
 
 
@@ -45,7 +45,9 @@ package SQL::Bibliosoph::Query; {
         #say 'Preparing "' . $self->name() ;
 
 		$self->sth( $self->dbh()->prepare_cached($st) )
-					or croak "error preparing :  $st";
+            or SQL::Bibliosoph::Exception::QuerySyntaxError->throw(
+                desc => "error preparing :  $st"
+        );
 
 		# Set numeric bind variables
 		foreach (@$numeric_fields) {
@@ -140,9 +142,9 @@ package SQL::Bibliosoph::Query; {
 		}
 		$self->bind_params($total);
 
-        croak "Bad statament use ALL numbered bind variables, or NONE, but don't mix them in $$st " 
-            if $numbered && $numbered != $total;
-
+        SQL::Bibliosoph::Exception::QuerySyntaxError->throw(
+            desc => "Bad statament use ALL numbered bind variables, or NONE, but don't mix them in $$st"
+        ) if $numbered && $numbered != $total;
 
 		# Replaces nums
 		$$st =~ s/\#?\d*?\?/?/g;
@@ -200,9 +202,14 @@ package SQL::Bibliosoph::Query; {
                     . '\"'
                     ;
 
-            if ($self->throw_errors() ) {
+            if (
+                $self->throw_errors() == 2
+                || ($self->throw_errors() == 1 && $e !~ /\sDuplicate entry\s/ )
+            ) {
                # $sth->err and $DBI::err will be true if error was from DBI
-               carp $e unless $self->quiet() ; # print the error
+               SQL::Bibliosoph::Exception::QuerySyntaxError->throw (
+                   desc => $e,
+               ) unless $self->quiet() ; # print the error
             }
             else {
                 print STDERR $e;        

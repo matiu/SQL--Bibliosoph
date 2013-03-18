@@ -1,7 +1,6 @@
 package SQL::Bibliosoph; {
     use Moose;
 
-    use Carp;
     use Data::Dumper;
     use Digest::MD5 qw/ md5_hex /;
     use Cache::Memcached::Fast;
@@ -10,7 +9,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.46";
+    our $VERSION = "2.52";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -26,6 +25,7 @@ package SQL::Bibliosoph; {
 
     has 'queries'   => ( is => 'rw', default=> sub { return {}; } );
     has 'memc'      => ( is => 'rw');
+    has 'log_prefix'=> ( is => 'rw');
     has throw_errors=> ( is => 'rw', default=> 1);
 
     ## OLD (just for backwards compat)
@@ -33,13 +33,19 @@ package SQL::Bibliosoph; {
 
     sub d {
         my $self = shift;
-        print STDERR join (' ', map { $_ // 'NULL'  } @_ )  if $self->debug(); 
+        my $name = shift;
+        print STDERR 
+            $self->log_prefix() 
+            . $name 
+            . join (':', map { $_ // 'NULL'  } @_ )  if $self->debug(); 
     }
 
     #------------------------------------------------------------------
 
     sub BUILD {
         my ($self) = @_;
+
+        $self->log_prefix('') if ! $self->log_prefix();
 
         $self->d( "Constructing Bibliosoph\n" ) ;
 
@@ -227,7 +233,7 @@ package SQL::Bibliosoph; {
                 # Many
                 *$name = sub {
                     my ($that) = shift;
-                    $self->d('many ',$name,@_);
+                    $self->d('Q ',$name,@_);
                     return $self->queries()->{$name}->select_many([@_]);
                 };
 
@@ -236,7 +242,7 @@ package SQL::Bibliosoph; {
                 # Many
                 *$name_row = sub {
                     my ($that) = shift;
-                    $self->d('manyh ',$name,@_);
+                    $self->d('Q h_',$name,@_);
                     return $self->queries()->{$name}->select_many([@_],{});
                 };
 
@@ -245,7 +251,7 @@ package SQL::Bibliosoph; {
 
                 *$name_row = sub {
                     my ($that) = shift;
-                    $self->d('row  ',$name,@_);
+                    $self->d('Q row_',$name,@_);
                     return $self->queries()->{$name}->select_row([@_]);
                 };
 
@@ -254,7 +260,7 @@ package SQL::Bibliosoph; {
 
                 *$name_row = sub {
                     my ($that) = shift;
-                    $self->d('rowh  ',$name,@_);
+                    $self->d('Q rowh_',$name,@_);
                     return $self->queries()->{$name}->select_row_hash([@_]);
                 };
 
@@ -267,9 +273,11 @@ package SQL::Bibliosoph; {
                     my $ttl;
                     my $cfg  = shift @_;
 
-                    $self->d('manyCh',$name,@_);
+                    $self->d('Q ch_',$name,@_);
 
-                    croak "we calling a ch_* function, first argument must be a hash_ref and must have a 'ttl' keyword" if  ref ($cfg) ne 'HASH' || ! ( $ttl = $cfg->{ttl} );
+                    SQL::Bibliosoph::Exception::CallError->throw(
+                        desc => "when calling a ch_* function, first argument must be a hash_ref and must have a 'ttl' keyword"
+                    ) if  ref ($cfg) ne 'HASH' || ! ( $ttl = $cfg->{ttl} );
 
                     if (! $self->memc() ) {
                         $self->d("\n\tMemcached is NOT used, no server is defined");
@@ -318,7 +326,7 @@ package SQL::Bibliosoph; {
 				$name_row = $name . '_sth';
 				*$name_row = sub {
 					my ($that) = shift;
-					$self->d('sth   ', $name, @_);
+					$self->d('Q ', $name, @_);
 					return $self->queries()->{$name}->select_do([@_]);
 				};
 
@@ -334,7 +342,7 @@ package SQL::Bibliosoph; {
                 # Many
                 *$name = sub {
                     my ($that) = shift;
-                    $self->d('many ',$name,@_);
+                    $self->d('Q ',$name,@_);
 
 
                     return wantarray 
@@ -348,7 +356,7 @@ package SQL::Bibliosoph; {
                 *$nameh = sub {
                     my ($that) = shift;
 
-                    $self->d('manyh ',$name,@_);
+                    $self->d('Q h_',$name,@_);
 
                     return wantarray 
                         ? $self->queries()->{$name}->select_many2([@_],{})
@@ -365,9 +373,11 @@ package SQL::Bibliosoph; {
                     my $ttl;
                     my $cfg  = shift @_;
 
-                    $self->d('manyCh',$name,@_);
+                    $self->d('Q ch_',$name,@_);
 
-                    croak "we calling a ch_* function, first argument must be a hash_ref and must have a 'ttl' keyword" if  ref ($cfg) ne 'HASH' || ! ( $ttl = $cfg->{ttl} );
+                    SQL::Bibliosoph::Exception::CallError->throw(
+                        desc => "when calling a ch_* function, first argument must be a hash_ref and must have a 'ttl' keyword"
+                    ) if  ref ($cfg) ne 'HASH' || ! ( $ttl = $cfg->{ttl} );
 
                     if (! $self->memc() ) {
                         $self->d("\n\tMemcached is NOT used, no server is defined");
@@ -437,7 +447,7 @@ package SQL::Bibliosoph; {
                 # do
                 *$name = sub {
                     my ($that) = shift;
-                    $self->d('inse ',$name,@_);
+                    $self->d('Q ',$name,@_);
                     
                     my $ret = $self->queries()
                                 ->{$name}
@@ -464,7 +474,7 @@ package SQL::Bibliosoph; {
             #  scalar :  SQL_ROWS (modified rows)
             *$name = sub {
                 my ($that) = shift;
-                $self->d('oth  ',$name,@_);
+                $self->d('Q ',$name,@_);
 
                 return $self->queries()
                             ->{$name}
@@ -667,8 +677,8 @@ SQL::Bibliosoph supports bind parameters in statements definition and bind
 parements reordering (See SQL::Bibliosoph::CatalogFile for details).
 
 
-All functions throw 'carp' on error. The error message is 'SQL ERROR' and the
-mysql error reported by the driver.
+All functions throw 'SQL::Bibliosoph::Exception::QuerySyntaxError' on error. The 
+error message is 'SQL ERROR' and the mysql error reported by the driver.
 
 =head1 Constructor parameters
 
@@ -721,6 +731,14 @@ printed to STDERR after each query execution, if the time is bigger that
 
 To enable debug (prints each query, and arguments, very useful during
 development).
+
+=head3 throw_errors
+Enable by default. Will throw SQL::Bibliosoph::Exceptions on errors. If disabled,
+will print to STDERR. By default, duplicate key errors are not throwed are exception
+set this variable to '2' if you want that.
+
+
+=head3 duplicate_key 
 
 =head1 Bibliosoph
 

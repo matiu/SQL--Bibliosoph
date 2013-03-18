@@ -1,7 +1,7 @@
 # This Makefile is for the SQL::Bibliosoph extension to perl.
 #
 # It was generated automatically by MakeMaker version
-# 6.58 (Revision: 65800) from the contents of
+# 6.62 (Revision: 66200) from the contents of
 # Makefile.PL. Don't edit this file, edit Makefile.PL instead.
 #
 #       ANY CHANGES MADE HERE WILL BE LOST!
@@ -17,7 +17,7 @@
 #     CONFIGURE_REQUIRES => {  }
 #     MIN_PERL_VERSION => q[5.010000]
 #     NAME => q[SQL::Bibliosoph]
-#     PREREQ_PM => { DBD::Mock=>q[0], Package::Constants=>q[0], Tie::Hash::Random=>q[1], Storable=>q[0], Time::HiRes=>q[0], Carp=>q[0], Test::More=>q[0.88], Digest::MD5=>q[2.39], DBD::mysql=>q[4.004], Cache::Memcached::Fast=>q[0.17], Devel::Cover=>q[0], Moose=>q[0.82], Tie::Array::Random=>q[1], DBI=>q[1.5] }
+#     PREREQ_PM => { DBD::Mock=>q[1.43], Package::Constants=>q[0.02], Tie::Hash::Random=>q[1], Storable=>q[2.3], Time::HiRes=>q[1.97], Carp=>q[1.25], Exception::Class=>q[1.3], Test::More=>q[0.88], DBD::mysql=>q[4.004], Digest::MD5=>q[2.39], Cache::Memcached::Fast=>q[0.17], Moose=>q[0.82], Tie::Array::Random=>q[1], DBI=>q[1.5] }
 #     VERSION_FROM => q[lib/SQL/Bibliosoph.pm]
 
 # --- MakeMaker post_initialize section:
@@ -25,29 +25,29 @@
 
 # --- MakeMaker const_config section:
 
-# These definitions are from config.sh (via /opt/local/lib/perl5/5.10.1/darwin-2level/Config.pm).
+# These definitions are from config.sh (via /opt/local/lib/perl5/5.10.1/darwin-thread-multi-2level/Config.pm).
 # They may have been overridden via Makefile.PL or on the command line.
 AR = ar
-CC = /usr/bin/gcc-4.2
+CC = /usr/bin/clang
 CCCDLFLAGS =  
 CCDLFLAGS =  
 DLEXT = bundle
 DLSRC = dl_dlopen.xs
 EXE_EXT = 
 FULL_AR = /usr/bin/ar
-LD = env MACOSX_DEPLOYMENT_TARGET=10.3 cc
-LDDLFLAGS = -L/opt/local/lib -bundle -undefined dynamic_lookup -fstack-protector
-LDFLAGS = -L/opt/local/lib -fstack-protector
-LIBC = /usr/lib/libc.dylib
+LD = env MACOSX_DEPLOYMENT_TARGET=10.3 /usr/bin/clang
+LDDLFLAGS = -L/opt/local/lib  -bundle -undefined dynamic_lookup -fstack-protector
+LDFLAGS = -L/opt/local/lib  -fstack-protector
+LIBC = 
 LIB_EXT = .a
 OBJ_EXT = .o
 OSNAME = darwin
-OSVERS = 10.2.0
+OSVERS = 11.3.0
 RANLIB = ranlib
 SITELIBEXP = /opt/local/lib/perl5/site_perl/5.10.1
-SITEARCHEXP = /opt/local/lib/perl5/site_perl/5.10.1/darwin-2level
+SITEARCHEXP = /opt/local/lib/perl5/site_perl/5.10.1/darwin-thread-multi-2level
 SO = dylib
-VENDORARCHEXP = /opt/local/lib/perl5/vendor_perl/5.10.1/darwin-2level
+VENDORARCHEXP = /opt/local/lib/perl5/vendor_perl/5.10.1/darwin-thread-multi-2level
 VENDORLIBEXP = /opt/local/lib/perl5/vendor_perl/5.10.1
 
 
@@ -57,11 +57,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = SQL::Bibliosoph
 NAME_SYM = SQL_Bibliosoph
-VERSION = 2.45
+VERSION = 2.52
 VERSION_MACRO = VERSION
-VERSION_SYM = 2_45
+VERSION_SYM = 2_52
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 2.45
+XS_VERSION = 2.52
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -70,8 +70,8 @@ INST_BIN = blib/bin
 INST_LIB = blib/lib
 INST_MAN1DIR = blib/man1
 INST_MAN3DIR = blib/man3
-MAN1EXT = 1
-MAN3EXT = 3
+MAN1EXT = 1pm
+MAN3EXT = 3pm
 INSTALLDIRS = site
 DESTDIR = 
 PREFIX = $(SITEPREFIX)
@@ -84,11 +84,11 @@ INSTALLSITELIB = /opt/local/lib/perl5/site_perl/5.10.1
 DESTINSTALLSITELIB = $(DESTDIR)$(INSTALLSITELIB)
 INSTALLVENDORLIB = /opt/local/lib/perl5/vendor_perl/5.10.1
 DESTINSTALLVENDORLIB = $(DESTDIR)$(INSTALLVENDORLIB)
-INSTALLARCHLIB = /opt/local/lib/perl5/5.10.1/darwin-2level
+INSTALLARCHLIB = /opt/local/lib/perl5/5.10.1/darwin-thread-multi-2level
 DESTINSTALLARCHLIB = $(DESTDIR)$(INSTALLARCHLIB)
-INSTALLSITEARCH = /opt/local/lib/perl5/site_perl/5.10.1/darwin-2level
+INSTALLSITEARCH = /opt/local/lib/perl5/site_perl/5.10.1/darwin-thread-multi-2level
 DESTINSTALLSITEARCH = $(DESTDIR)$(INSTALLSITEARCH)
-INSTALLVENDORARCH = /opt/local/lib/perl5/vendor_perl/5.10.1/darwin-2level
+INSTALLVENDORARCH = /opt/local/lib/perl5/vendor_perl/5.10.1/darwin-thread-multi-2level
 DESTINSTALLVENDORARCH = $(DESTDIR)$(INSTALLVENDORARCH)
 INSTALLBIN = /opt/local/bin
 DESTINSTALLBIN = $(DESTDIR)$(INSTALLBIN)
@@ -102,26 +102,26 @@ INSTALLSITESCRIPT = /opt/local/bin
 DESTINSTALLSITESCRIPT = $(DESTDIR)$(INSTALLSITESCRIPT)
 INSTALLVENDORSCRIPT = /opt/local/bin
 DESTINSTALLVENDORSCRIPT = $(DESTDIR)$(INSTALLVENDORSCRIPT)
-INSTALLMAN1DIR = /opt/local/share/man/man1
+INSTALLMAN1DIR = /opt/local/share/man/man1p
 DESTINSTALLMAN1DIR = $(DESTDIR)$(INSTALLMAN1DIR)
 INSTALLSITEMAN1DIR = /opt/local/share/man/man1
 DESTINSTALLSITEMAN1DIR = $(DESTDIR)$(INSTALLSITEMAN1DIR)
 INSTALLVENDORMAN1DIR = /opt/local/share/man/man1
 DESTINSTALLVENDORMAN1DIR = $(DESTDIR)$(INSTALLVENDORMAN1DIR)
-INSTALLMAN3DIR = /opt/local/share/man/man3
+INSTALLMAN3DIR = /opt/local/share/man/man3p
 DESTINSTALLMAN3DIR = $(DESTDIR)$(INSTALLMAN3DIR)
 INSTALLSITEMAN3DIR = /opt/local/share/man/man3
 DESTINSTALLSITEMAN3DIR = $(DESTDIR)$(INSTALLSITEMAN3DIR)
 INSTALLVENDORMAN3DIR = /opt/local/share/man/man3
 DESTINSTALLVENDORMAN3DIR = $(DESTDIR)$(INSTALLVENDORMAN3DIR)
 PERL_LIB = /opt/local/lib/perl5/5.10.1
-PERL_ARCHLIB = /opt/local/lib/perl5/5.10.1/darwin-2level
+PERL_ARCHLIB = /opt/local/lib/perl5/5.10.1/darwin-thread-multi-2level
 LIBPERL_A = libperl.a
 FIRST_MAKEFILE = Makefile
 MAKEFILE_OLD = Makefile.old
 MAKE_APERL_FILE = Makefile.aperl
 PERLMAINCC = $(CC)
-PERL_INC = /opt/local/lib/perl5/5.10.1/darwin-2level/CORE
+PERL_INC = /opt/local/lib/perl5/5.10.1/darwin-thread-multi-2level/CORE
 PERL = /opt/local/bin/perl
 FULLPERL = /opt/local/bin/perl
 ABSPERL = $(PERL)
@@ -137,8 +137,8 @@ PERM_RW = 644
 PERM_RWX = 755
 
 MAKEMAKER   = /opt/local/lib/perl5/5.10.1/ExtUtils/MakeMaker.pm
-MM_VERSION  = 6.58
-MM_REVISION = 65800
+MM_VERSION  = 6.62
+MM_REVISION = 66200
 
 # FULLEXT = Pathname for extension directory (eg Foo/Bar/Oracle).
 # BASEEXT = Basename part of FULLEXT. May be just equal FULLEXT. (eg Oracle)
@@ -189,10 +189,13 @@ PERL_ARCHIVE_AFTER =
 TO_INST_PM = lib/SQL/Bibliosoph.pm \
 	lib/SQL/Bibliosoph/CatalogFile.pm \
 	lib/SQL/Bibliosoph/Dummy.pm \
+	lib/SQL/Bibliosoph/Exceptions.pm \
 	lib/SQL/Bibliosoph/Query.pm \
 	lib/SQL/Bibliosoph/Sims.pm
 
-PM_TO_BLIB = lib/SQL/Bibliosoph/Dummy.pm \
+PM_TO_BLIB = lib/SQL/Bibliosoph/Exceptions.pm \
+	blib/lib/SQL/Bibliosoph/Exceptions.pm \
+	lib/SQL/Bibliosoph/Dummy.pm \
 	blib/lib/SQL/Bibliosoph/Dummy.pm \
 	lib/SQL/Bibliosoph/Query.pm \
 	blib/lib/SQL/Bibliosoph/Query.pm \
@@ -205,7 +208,7 @@ PM_TO_BLIB = lib/SQL/Bibliosoph/Dummy.pm \
 
 
 # --- MakeMaker platform_constants section:
-MM_Unix_VERSION = 6.58
+MM_Unix_VERSION = 6.62
 PERL_MALLOC_DEF = -DPERL_EXTMALLOC_DEF -Dmalloc=Perl_malloc -Dfree=Perl_mfree -Drealloc=Perl_realloc -Dcalloc=Perl_calloc
 
 
@@ -270,7 +273,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = SQL-Bibliosoph
-DISTVNAME = SQL-Bibliosoph-2.45
+DISTVNAME = SQL-Bibliosoph-2.52
 
 
 # --- MakeMaker macro section:
@@ -494,8 +497,102 @@ realclean purge ::  clean realclean_subdirs
 
 
 # --- MakeMaker metafile section:
-metafile :
-	$(NOECHO) $(NOOP)
+metafile : create_distdir
+	$(NOECHO) $(ECHO) Generating META.yml
+	$(NOECHO) $(ECHO) '---' > META_new.yml
+	$(NOECHO) $(ECHO) 'abstract: '\''A SQL Query library'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'author:' >> META_new.yml
+	$(NOECHO) $(ECHO) '  - '\''Matias Alejo Garcia ( matiu@cpan.org ) '\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'build_requires:' >> META_new.yml
+	$(NOECHO) $(ECHO) '  ExtUtils::MakeMaker: 0' >> META_new.yml
+	$(NOECHO) $(ECHO) 'configure_requires:' >> META_new.yml
+	$(NOECHO) $(ECHO) '  ExtUtils::MakeMaker: 0' >> META_new.yml
+	$(NOECHO) $(ECHO) 'dynamic_config: 1' >> META_new.yml
+	$(NOECHO) $(ECHO) 'generated_by: '\''ExtUtils::MakeMaker version 6.62, CPAN::Meta::Converter version 2.120921'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'license: unknown' >> META_new.yml
+	$(NOECHO) $(ECHO) 'meta-spec:' >> META_new.yml
+	$(NOECHO) $(ECHO) '  url: http://module-build.sourceforge.net/META-spec-v1.4.html' >> META_new.yml
+	$(NOECHO) $(ECHO) '  version: 1.4' >> META_new.yml
+	$(NOECHO) $(ECHO) 'name: SQL-Bibliosoph' >> META_new.yml
+	$(NOECHO) $(ECHO) 'no_index:' >> META_new.yml
+	$(NOECHO) $(ECHO) '  directory:' >> META_new.yml
+	$(NOECHO) $(ECHO) '    - t' >> META_new.yml
+	$(NOECHO) $(ECHO) '    - inc' >> META_new.yml
+	$(NOECHO) $(ECHO) 'requires:' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Cache::Memcached::Fast: 0.17' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Carp: 1.25' >> META_new.yml
+	$(NOECHO) $(ECHO) '  DBD::Mock: 1.43' >> META_new.yml
+	$(NOECHO) $(ECHO) '  DBD::mysql: 4.004' >> META_new.yml
+	$(NOECHO) $(ECHO) '  DBI: 1.5' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Digest::MD5: 2.39' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Exception::Class: 1.3' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Moose: 0.82' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Package::Constants: 0.02' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Storable: 2.3' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Test::More: 0.88' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Tie::Array::Random: 1' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Tie::Hash::Random: 1' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Time::HiRes: 1.97' >> META_new.yml
+	$(NOECHO) $(ECHO) '  perl: 5.010000' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: 2.52' >> META_new.yml
+	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
+	$(NOECHO) $(ECHO) Generating META.json
+	$(NOECHO) $(ECHO) '{' > META_new.json
+	$(NOECHO) $(ECHO) '   "abstract" : "A SQL Query library",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "author" : [' >> META_new.json
+	$(NOECHO) $(ECHO) '      "Matias Alejo Garcia ( matiu@cpan.org ) "' >> META_new.json
+	$(NOECHO) $(ECHO) '   ],' >> META_new.json
+	$(NOECHO) $(ECHO) '   "dynamic_config" : 1,' >> META_new.json
+	$(NOECHO) $(ECHO) '   "generated_by" : "ExtUtils::MakeMaker version 6.62, CPAN::Meta::Converter version 2.120921",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "license" : [' >> META_new.json
+	$(NOECHO) $(ECHO) '      "unknown"' >> META_new.json
+	$(NOECHO) $(ECHO) '   ],' >> META_new.json
+	$(NOECHO) $(ECHO) '   "meta-spec" : {' >> META_new.json
+	$(NOECHO) $(ECHO) '      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",' >> META_new.json
+	$(NOECHO) $(ECHO) '      "version" : "2"' >> META_new.json
+	$(NOECHO) $(ECHO) '   },' >> META_new.json
+	$(NOECHO) $(ECHO) '   "name" : "SQL-Bibliosoph",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "no_index" : {' >> META_new.json
+	$(NOECHO) $(ECHO) '      "directory" : [' >> META_new.json
+	$(NOECHO) $(ECHO) '         "t",' >> META_new.json
+	$(NOECHO) $(ECHO) '         "inc"' >> META_new.json
+	$(NOECHO) $(ECHO) '      ]' >> META_new.json
+	$(NOECHO) $(ECHO) '   },' >> META_new.json
+	$(NOECHO) $(ECHO) '   "prereqs" : {' >> META_new.json
+	$(NOECHO) $(ECHO) '      "build" : {' >> META_new.json
+	$(NOECHO) $(ECHO) '         "requires" : {' >> META_new.json
+	$(NOECHO) $(ECHO) '            "ExtUtils::MakeMaker" : "0"' >> META_new.json
+	$(NOECHO) $(ECHO) '         }' >> META_new.json
+	$(NOECHO) $(ECHO) '      },' >> META_new.json
+	$(NOECHO) $(ECHO) '      "configure" : {' >> META_new.json
+	$(NOECHO) $(ECHO) '         "requires" : {' >> META_new.json
+	$(NOECHO) $(ECHO) '            "ExtUtils::MakeMaker" : "0"' >> META_new.json
+	$(NOECHO) $(ECHO) '         }' >> META_new.json
+	$(NOECHO) $(ECHO) '      },' >> META_new.json
+	$(NOECHO) $(ECHO) '      "runtime" : {' >> META_new.json
+	$(NOECHO) $(ECHO) '         "requires" : {' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Cache::Memcached::Fast" : "0.17",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Carp" : "1.25",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "DBD::Mock" : "1.43",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "DBD::mysql" : "4.004",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "DBI" : "1.5",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Digest::MD5" : "2.39",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Exception::Class" : "1.3",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Moose" : "0.82",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Package::Constants" : "0.02",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Storable" : "2.3",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Test::More" : "0.88",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Tie::Array::Random" : "1",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Tie::Hash::Random" : "1",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Time::HiRes" : "1.97",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "perl" : "5.010000"' >> META_new.json
+	$(NOECHO) $(ECHO) '         }' >> META_new.json
+	$(NOECHO) $(ECHO) '      }' >> META_new.json
+	$(NOECHO) $(ECHO) '   },' >> META_new.json
+	$(NOECHO) $(ECHO) '   "release_status" : "stable",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "2.52"' >> META_new.json
+	$(NOECHO) $(ECHO) '}' >> META_new.json
+	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
 
 
 # --- MakeMaker signature section:
@@ -789,26 +886,26 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="2.45">' > $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="2.52">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>A SQL Query library</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Matias Alejo Garcia ( matiu@cpan.org ) </AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <PERLCORE VERSION="5,010000,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Cache::Memcached::Fast" VERSION="0.17" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Carp::" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBD::Mock" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Carp::" VERSION="1.25" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBD::Mock" VERSION="1.43" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBD::mysql" VERSION="4.004" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBI::" VERSION="1.5" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Devel::Cover" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Digest::MD5" VERSION="2.39" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Exception::Class" VERSION="1.3" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" VERSION="0.82" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Package::Constants" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Storable::" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Package::Constants" VERSION="0.02" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Storable::" VERSION="2.3" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Test::More" VERSION="0.88" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Tie::Array::Random" VERSION="1" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Tie::Hash::Random" VERSION="1" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Time::HiRes" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="darwin-2level-5.10" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Time::HiRes" VERSION="1.97" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="darwin-thread-multi-2level-5.10" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '</SOFTPKG>' >> $(DISTNAME).ppd
@@ -818,6 +915,7 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  lib/SQL/Bibliosoph/Exceptions.pm blib/lib/SQL/Bibliosoph/Exceptions.pm \
 	  lib/SQL/Bibliosoph/Dummy.pm blib/lib/SQL/Bibliosoph/Dummy.pm \
 	  lib/SQL/Bibliosoph/Query.pm blib/lib/SQL/Bibliosoph/Query.pm \
 	  lib/SQL/Bibliosoph.pm blib/lib/SQL/Bibliosoph.pm \

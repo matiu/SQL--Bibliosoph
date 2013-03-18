@@ -1,9 +1,9 @@
 package SQL::Bibliosoph::CatalogFile; {
 	use Moose;
     use utf8;
-	use Carp;
 	use Data::Dumper;
     use Package::Constants; 
+    use SQL::Bibliosoph::Exceptions;
 
     our $VERSION = "2.00";
 
@@ -25,7 +25,9 @@ package SQL::Bibliosoph::CatalogFile; {
 			$self->read_only(1);
 		}
 
-		croak "File does not exists $file " if ! -e $file;
+        SQL::Bibliosoph::Exception::CatalogFileError->throw(
+            desc => "File does not exists $file " 
+        ) if ! -e $file;
 	}
 
     #------------------------------------------------------------------
@@ -116,7 +118,9 @@ package SQL::Bibliosoph::CatalogFile; {
 
 		my $FH;
 		open ($FH,$file) 
-			or croak "Could not read \"".$file."\" : $!";
+			or SQL::Bibliosoph::Exception::CatalogFileError->throw(
+                desc => "Could not read \"".$file."\" : $!"
+        ); 
 
 		my @all = <$FH>;
 		close ($FH);
