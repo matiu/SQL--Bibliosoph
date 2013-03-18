@@ -197,6 +197,12 @@ package SQL::Bibliosoph; {
                $type = 'SELECT';
            }
 
+		   # Small exception4:
+		   # SELECTs in Postgres can define subqueries with WITH.
+		   elsif (lc($type) eq 'with') {
+			   $type = 'SELECT';
+		   }
+
             $self->create_method_for(uc($type||''),$name);
         }
 
