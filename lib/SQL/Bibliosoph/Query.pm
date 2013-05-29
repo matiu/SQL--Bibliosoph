@@ -3,6 +3,7 @@ package SQL::Bibliosoph::Query; {
 	use DBI;
     use Data::Dumper;
     use Time::HiRes qw(gettimeofday tv_interval);
+    use Log::Contextual qw(:log);
     use feature qw(say);
 
     use SQL::Bibliosoph::Dummy;
@@ -212,7 +213,7 @@ package SQL::Bibliosoph::Query; {
                ) unless $self->quiet() ; # print the error
             }
             else {
-                print STDERR $e;        
+                log_debug { $e };        
                 return SQL::Bibliosoph::Dummy->new();
             }
         }
@@ -222,9 +223,8 @@ package SQL::Bibliosoph::Query; {
             my $t = tv_interval( $start_time ) ;
 
             # Only if it takes more that 1ms...
-            print STDERR "\t[". $t *1000 . " ms] " if $t > $min_t;
+            log_debug { "[". $t *1000 . " ms] " } if $t > $min_t;
         }
-        print STDERR "\n" if $self->debug(); 
 
 		return $self->sth();
 	}

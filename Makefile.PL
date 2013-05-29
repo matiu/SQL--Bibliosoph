@@ -22,6 +22,7 @@ WriteMakefile(
             'Cache::Memcached::Fast' => 0.17,
             'Storable'          => 2.30,
             'Exception::Class'  => 1.30,
+            'Log::Contextual'   => 0.005003,
         },
     MIN_PERL_VERSION => '5.10.0',
 );

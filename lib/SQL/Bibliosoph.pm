@@ -5,11 +5,12 @@ package SQL::Bibliosoph; {
     use Digest::MD5 qw/ md5_hex /;
     use Cache::Memcached::Fast;
     use Storable;
+    use Log::Contextual qw(:log);
 
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.52";
+    our $VERSION = "2.53";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -34,10 +35,12 @@ package SQL::Bibliosoph; {
     sub d {
         my $self = shift;
         my $name = shift;
-        print STDERR 
+        my @all  = @_;
+        log_debug { 
             $self->log_prefix() 
             . $name 
-            . join (':', map { $_ // 'NULL'  } @_ )  if $self->debug(); 
+            . join (':', map { $_ // 'NULL'  } @all )
+        }  if $self->debug(); 
     }
 
     #------------------------------------------------------------------
@@ -46,8 +49,6 @@ package SQL::Bibliosoph; {
         my ($self) = @_;
 
         $self->log_prefix('') if ! $self->log_prefix();
-
-        $self->d( "Constructing Bibliosoph\n" ) ;
 
         $self->path(  $self->path() . '/' ) if $self->path() ;
 
@@ -78,7 +79,7 @@ package SQL::Bibliosoph; {
                 $servers = [ { address => $s } ],
             }            
 
-            $self->d('Using memcached' . Dumper($servers) );
+            $self->d('Using memcached: ' . join (',', $servers) );
 
             $self->memc( new Cache::Memcached::Fast({
                     servers             => $servers,
@@ -129,7 +130,7 @@ package SQL::Bibliosoph; {
         my ($self, $group) = @_;
 
         if ( $self->memc() ) {
-            $self->d("Expiring group $group\n");
+            $self->d("Expiring group $group");
 
             
             if (my $md5s = $self->memc()->get($group . '-g') ) {
@@ -146,7 +147,7 @@ package SQL::Bibliosoph; {
             $self->memc()->delete( $group . '-g' );
         }
         else {
-            $self->d("Could not expire \"$group\" -> Memcached not configured\n");
+            $self->d("Could not expire \"$group\" -> Memcached not configured");
         }
     }
 
@@ -206,8 +207,7 @@ package SQL::Bibliosoph; {
             $self->create_method_for(uc($type||''),$name);
         }
 
-
-        $self->d("\tCreated methods for [".(keys %$q)."] queries\n");
+#        $self->d("Created methods for [".(keys %$q)."] queries");
     }
 
     
@@ -267,14 +267,14 @@ package SQL::Bibliosoph; {
                     my $ttl;
                     my $cfg  = shift @_;
 
-                    $self->d('Q ch_',$name,@_);
+                    my @log = ('Q ch_',$name,@_);
 
                     SQL::Bibliosoph::Exception::CallError->throw(
                         desc => "when calling a ch_* function, first argument must be a hash_ref and must have a 'ttl' keyword"
                     ) if  ref ($cfg) ne 'HASH' || ! ( $ttl = $cfg->{ttl} );
 
                     if (! $self->memc() ) {
-                        $self->d("\n\tMemcached is NOT used, no server is defined");
+                        $self->d(@log, " [Memcached is NOT used, no server is defined]");
                         return $self->queries()->{$name}->select_many([@_],{});
                     }
 
@@ -288,11 +288,11 @@ package SQL::Bibliosoph; {
                         $ret = $self->memc()->get($md5);
                     }
                     else {
-                        $self->d("\n\t[forced to run SQL query & store result in memc (rowh)]\n");
+                        $self->d(@log," [forced to run]");
                     }
                     
                     if (! defined $ret ) { 
-                        $self->d("\t[running SQL & storing memc]\n");
+                        $self->d(@log," [running & storing]");
 
 #print "cfg:" . Dumper($cfg); 
 #print "ret:" . Dumper($ret); 
@@ -310,7 +310,7 @@ package SQL::Bibliosoph; {
                         ##
                     }
                     else {
-                        $self->d("\t[from memc]\n");
+                        $self->d(@log," [from memc]");
                     }
 
                     return $ret || [];
@@ -367,14 +367,14 @@ package SQL::Bibliosoph; {
                     my $ttl;
                     my $cfg  = shift @_;
 
-                    $self->d('Q ch_',$name,@_);
+                    my @log = ('Q ch_',$name,@_);
 
                     SQL::Bibliosoph::Exception::CallError->throw(
                         desc => "when calling a ch_* function, first argument must be a hash_ref and must have a 'ttl' keyword"
                     ) if  ref ($cfg) ne 'HASH' || ! ( $ttl = $cfg->{ttl} );
 
                     if (! $self->memc() ) {
-                        $self->d("\n\tMemcached is NOT used, no server is defined");
+                        $self->d(@log, " [Memcached is NOT used, no server is defined]");
                         return wantarray 
                             ? $self->queries()->{$name}->select_many2([@_],{})
                             : $self->queries()->{$name}->select_many([@_],{}) 
@@ -397,11 +397,11 @@ package SQL::Bibliosoph; {
                         }
                     }
                     else {
-                        $self->d("\t[forced to run SQL query & store result in memc]\n");
+                        $self->d(@log," [forced to run]");
                     }
 
                     if (! defined $val ) { 
-                        $self->d("\t[running SQL & storing memc]\n");
+                        $self->d(@log," [running & storing]");
 
                         ($val, $count)
                             = $self->queries()->{$name}->select_many2([@_],{});
@@ -417,7 +417,7 @@ package SQL::Bibliosoph; {
                         }
                     }
                     else {
-                        $self->d("\t[from memc]\n");
+                        $self->d(@log," [from memc]");
                     }
 
                     $val //= [];
@@ -501,14 +501,12 @@ package SQL::Bibliosoph; {
                         throw_errors => $self->throw_errors(),
             };
 
-            # print STDERR " Query for ".Dumper($args);            
-
             # Prepare the statement
             $self->queries()->{$name} = SQL::Bibliosoph::Query->new( $args );
 
             $i++;                  
         }
-        $self->d("\tPrepared $i Statements". ( $self->delayed() ? " (delayed) " : '' ). "\n");
+        $self->d( __PACKAGE__ . ": Prepared $i Statements". ( $self->delayed() ? " (delayed) " : '' ));
     }
 }
 
@@ -533,7 +531,7 @@ SQL::Bibliosoph - A SQL Statements Library
     #  (0.5 = logs queries that takes more than half second)
             benchmark=> 0.5,
 
-    # enables debug to STDERR
+    # enables debug using Log::Contextual 
             debug    => 1,      
 
     # enables memcached usage            
@@ -718,7 +716,7 @@ when they are used for the first time. Defaults to false(0).
 =head3 benchmark
 
 Use this to enable Query profilling. The elapsed time (in miliseconds) will be
-printed to STDERR after each query execution, if the time is bigger that
+printed with Log::Contextual after each query execution, if the time is bigger that
 `benchmark` (must be given in SECONDS, can be a floating point number).
 
 =head3 debug
@@ -728,7 +726,7 @@ development).
 
 =head3 throw_errors
 Enable by default. Will throw SQL::Bibliosoph::Exceptions on errors. If disabled,
-will print to STDERR. By default, duplicate key errors are not throwed are exception
+will print with Log::Contextual. By default, duplicate key errors are not throwed are exception
 set this variable to '2' if you want that.
 
 
