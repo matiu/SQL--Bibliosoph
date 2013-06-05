@@ -3,7 +3,14 @@ package SQL::Bibliosoph::Query; {
 	use DBI;
     use Data::Dumper;
     use Time::HiRes qw(gettimeofday tv_interval);
-    use Log::Contextual qw(:log);
+
+    use Log::Contextual::WarnLogger;
+    use Log::Contextual qw(:log),
+    -default_logger => Log::Contextual::WarnLogger->new({
+        env_prefix => 'Bibliosoph'
+    });
+
+
     use feature qw(say);
 
     use SQL::Bibliosoph::Dummy;
