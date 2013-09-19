@@ -58,11 +58,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = SQL::Bibliosoph
 NAME_SYM = SQL_Bibliosoph
-VERSION = 2.55
+VERSION = 2.56
 VERSION_MACRO = VERSION
-VERSION_SYM = 2_55
+VERSION_SYM = 2_56
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 2.55
+XS_VERSION = 2.56
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -188,30 +188,24 @@ PERL_ARCHIVE_AFTER =
 
 
 TO_INST_PM = lib/SQL/Bibliosoph.pm \
-	lib/SQL/Bibliosoph/.CatalogFile.pm.swo \
-	lib/SQL/Bibliosoph/.Query.pm.swo \
 	lib/SQL/Bibliosoph/CatalogFile.pm \
 	lib/SQL/Bibliosoph/Dummy.pm \
 	lib/SQL/Bibliosoph/Exceptions.pm \
 	lib/SQL/Bibliosoph/Query.pm \
 	lib/SQL/Bibliosoph/Sims.pm
 
-PM_TO_BLIB = lib/SQL/Bibliosoph/Query.pm \
-	blib/lib/SQL/Bibliosoph/Query.pm \
-	lib/SQL/Bibliosoph/Exceptions.pm \
+PM_TO_BLIB = lib/SQL/Bibliosoph/Exceptions.pm \
 	blib/lib/SQL/Bibliosoph/Exceptions.pm \
 	lib/SQL/Bibliosoph/Dummy.pm \
 	blib/lib/SQL/Bibliosoph/Dummy.pm \
-	lib/SQL/Bibliosoph/.Query.pm.swo \
-	blib/lib/SQL/Bibliosoph/.Query.pm.swo \
-	lib/SQL/Bibliosoph/.CatalogFile.pm.swo \
-	blib/lib/SQL/Bibliosoph/.CatalogFile.pm.swo \
+	lib/SQL/Bibliosoph/Query.pm \
+	blib/lib/SQL/Bibliosoph/Query.pm \
 	lib/SQL/Bibliosoph.pm \
 	blib/lib/SQL/Bibliosoph.pm \
-	lib/SQL/Bibliosoph/CatalogFile.pm \
-	blib/lib/SQL/Bibliosoph/CatalogFile.pm \
 	lib/SQL/Bibliosoph/Sims.pm \
-	blib/lib/SQL/Bibliosoph/Sims.pm
+	blib/lib/SQL/Bibliosoph/Sims.pm \
+	lib/SQL/Bibliosoph/CatalogFile.pm \
+	blib/lib/SQL/Bibliosoph/CatalogFile.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -280,7 +274,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = SQL-Bibliosoph
-DISTVNAME = SQL-Bibliosoph-2.55
+DISTVNAME = SQL-Bibliosoph-2.56
 
 
 # --- MakeMaker macro section:
@@ -435,13 +429,13 @@ POD2MAN = $(POD2MAN_EXE)
 manifypods : pure_all  \
 	lib/SQL/Bibliosoph/Query.pm \
 	lib/SQL/Bibliosoph.pm \
-	lib/SQL/Bibliosoph/CatalogFile.pm \
-	lib/SQL/Bibliosoph/Sims.pm
+	lib/SQL/Bibliosoph/Sims.pm \
+	lib/SQL/Bibliosoph/CatalogFile.pm
 	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) \
 	  lib/SQL/Bibliosoph/Query.pm $(INST_MAN3DIR)/SQL::Bibliosoph::Query.$(MAN3EXT) \
 	  lib/SQL/Bibliosoph.pm $(INST_MAN3DIR)/SQL::Bibliosoph.$(MAN3EXT) \
-	  lib/SQL/Bibliosoph/CatalogFile.pm $(INST_MAN3DIR)/SQL::Bibliosoph::CatalogFile.$(MAN3EXT) \
-	  lib/SQL/Bibliosoph/Sims.pm $(INST_MAN3DIR)/SQL::Bibliosoph::Sims.$(MAN3EXT) 
+	  lib/SQL/Bibliosoph/Sims.pm $(INST_MAN3DIR)/SQL::Bibliosoph::Sims.$(MAN3EXT) \
+	  lib/SQL/Bibliosoph/CatalogFile.pm $(INST_MAN3DIR)/SQL::Bibliosoph::CatalogFile.$(MAN3EXT) 
 
 
 
@@ -542,7 +536,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  Tie::Hash::Random: 1' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Time::HiRes: 1.97' >> META_new.yml
 	$(NOECHO) $(ECHO) '  perl: 5.010000' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: 2.55' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: 2.56' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
 	$(NOECHO) $(ECHO) '{' > META_new.json
@@ -599,7 +593,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "release_status" : "stable",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "2.55"' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "2.56"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
 
@@ -925,14 +919,12 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  lib/SQL/Bibliosoph/Query.pm blib/lib/SQL/Bibliosoph/Query.pm \
 	  lib/SQL/Bibliosoph/Exceptions.pm blib/lib/SQL/Bibliosoph/Exceptions.pm \
 	  lib/SQL/Bibliosoph/Dummy.pm blib/lib/SQL/Bibliosoph/Dummy.pm \
-	  lib/SQL/Bibliosoph/.Query.pm.swo blib/lib/SQL/Bibliosoph/.Query.pm.swo \
-	  lib/SQL/Bibliosoph/.CatalogFile.pm.swo blib/lib/SQL/Bibliosoph/.CatalogFile.pm.swo \
+	  lib/SQL/Bibliosoph/Query.pm blib/lib/SQL/Bibliosoph/Query.pm \
 	  lib/SQL/Bibliosoph.pm blib/lib/SQL/Bibliosoph.pm \
-	  lib/SQL/Bibliosoph/CatalogFile.pm blib/lib/SQL/Bibliosoph/CatalogFile.pm \
-	  lib/SQL/Bibliosoph/Sims.pm blib/lib/SQL/Bibliosoph/Sims.pm 
+	  lib/SQL/Bibliosoph/Sims.pm blib/lib/SQL/Bibliosoph/Sims.pm \
+	  lib/SQL/Bibliosoph/CatalogFile.pm blib/lib/SQL/Bibliosoph/CatalogFile.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 

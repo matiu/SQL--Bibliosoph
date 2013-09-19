@@ -16,7 +16,7 @@ package SQL::Bibliosoph; {
     use SQL::Bibliosoph::Query;
     use SQL::Bibliosoph::CatalogFile;
 
-    our $VERSION = "2.55";
+    our $VERSION = "2.56";
 
 
     has 'dbh'       => ( is => 'ro', isa => 'DBI::db',  required=> 1);
@@ -294,6 +294,9 @@ package SQL::Bibliosoph; {
                     ## check memcached
                     my $md5 = md5_hex( join (',', $name, map { $_ // 'NULL'  } @_ ));
 
+                    ## From group, to not colide with no grouped queries
+                    $md5 .= '-fg' if $cfg->{group}; 
+
                     my $ret;
 
                     if (! $cfg->{force} ) {
@@ -395,6 +398,11 @@ package SQL::Bibliosoph; {
 
                     my ($val, $count);
                     my $md5 = md5_hex( join (',', $name, map { $_ // 'NULL'  } @_ ));
+
+                    ## From group, to not colide with no grouped queries
+                    $md5 .= '-fg' if $cfg->{group}; 
+
+
                     my $md5c = $md5 . '_count';
 
                     if (! $cfg->{force} ) {
