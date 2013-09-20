@@ -17,7 +17,7 @@
 #     CONFIGURE_REQUIRES => {  }
 #     MIN_PERL_VERSION => q[5.010000]
 #     NAME => q[SQL::Bibliosoph]
-#     PREREQ_PM => { DBD::Mock=>q[1.43], Package::Constants=>q[0.02], Tie::Hash::Random=>q[1], Storable=>q[2.3], Time::HiRes=>q[1.97], Carp=>q[1.25], Exception::Class=>q[1.3], Test::More=>q[0.88], Log::Contextual=>q[0.005003], DBD::mysql=>q[4.004], Digest::MD5=>q[2.39], Cache::Memcached::Fast=>q[0.17], Moose=>q[0.82], Tie::Array::Random=>q[1], DBI=>q[1.5] }
+#     PREREQ_PM => { DBD::Mock=>q[1.43], Package::Constants=>q[0.02], Tie::Hash::Random=>q[1], Storable=>q[2.3], Time::HiRes=>q[1.97], Carp=>q[1.25], Exception::Class=>q[1.3], Test::More=>q[0.88], Log::Contextual=>q[0.005003], Digest::MD5=>q[2.39], Cache::Memcached::Fast=>q[0.17], Moose=>q[0.82], Tie::Array::Random=>q[1], DBI=>q[1.5] }
 #     TEST_REQUIRES => {  }
 #     VERSION_FROM => q[lib/SQL/Bibliosoph.pm]
 
@@ -523,7 +523,6 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  Cache::Memcached::Fast: 0.17' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Carp: 1.25' >> META_new.yml
 	$(NOECHO) $(ECHO) '  DBD::Mock: 1.43' >> META_new.yml
-	$(NOECHO) $(ECHO) '  DBD::mysql: 4.004' >> META_new.yml
 	$(NOECHO) $(ECHO) '  DBI: 1.5' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Digest::MD5: 2.39' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Exception::Class: 1.3' >> META_new.yml
@@ -576,7 +575,6 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '            "Cache::Memcached::Fast" : "0.17",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "Carp" : "1.25",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "DBD::Mock" : "1.43",' >> META_new.json
-	$(NOECHO) $(ECHO) '            "DBD::mysql" : "4.004",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "DBI" : "1.5",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "Digest::MD5" : "2.39",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "Exception::Class" : "1.3",' >> META_new.json
@@ -897,7 +895,6 @@ ppd :
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Cache::Memcached::Fast" VERSION="0.17" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Carp::" VERSION="1.25" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBD::Mock" VERSION="1.43" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBD::mysql" VERSION="4.004" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBI::" VERSION="1.5" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Digest::MD5" VERSION="2.39" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Exception::Class" VERSION="1.3" />' >> $(DISTNAME).ppd

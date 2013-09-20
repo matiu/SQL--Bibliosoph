@@ -292,11 +292,10 @@ package SQL::Bibliosoph; {
 
 
                     ## check memcached
-                    my $md5 = md5_hex( join (',', $name, map { $_ // 'NULL'  } @_ ));
-
-                    ## From group, to not colide with no grouped queries
-                    $md5 .= '-fg' if $cfg->{group}; 
-
+                    ## Also add group name, to not colide with no grouped queries
+                    my $md5 = md5_hex( join (',', $name, map { $_ // 'NULL'  } @_ ) . ($cfg->{group} || '' ) );
+                    # $self->d("MD5: $md5");
+                    
                     my $ret;
 
                     if (! $cfg->{force} ) {
@@ -397,13 +396,11 @@ package SQL::Bibliosoph; {
                     }
 
                     my ($val, $count);
-                    my $md5 = md5_hex( join (',', $name, map { $_ // 'NULL'  } @_ ));
 
-                    ## From group, to not colide with no grouped queries
-                    $md5 .= '-fg' if $cfg->{group}; 
-
-
+                    my $md5 = md5_hex( join (',', $name, map { $_ // 'NULL'  } @_ ) . ($cfg->{group} || '' ) );
                     my $md5c = $md5 . '_count';
+
+                    # $self->d("MD5: $md5");
 
                     if (! $cfg->{force} ) {
                         ## check memcached
