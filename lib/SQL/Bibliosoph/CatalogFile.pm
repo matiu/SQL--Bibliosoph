@@ -85,7 +85,7 @@ package SQL::Bibliosoph::CatalogFile; {
 				map {
 					[ 
 						map	  { $_ =~ s/^\s+|\s+$//g;$_ } 	# Trim
-						split /\]\s*\n/,$_ 				# Separate name & statement
+						split /\]\s*\n/,$_, 2 				# Separate name & statement
 					]	
 				}
 				grep { $_ } 							# Filter out empty element
